@@ -1,0 +1,226 @@
+{
+    "_id": {
+        "$oid": "60d735f9c99d3c001f3b4567"
+    },
+    "title": "La mission spatiale Artemis: Le retour de l'homme sur la Lune",
+    "sourceUrl": "https://example.com/source-article",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Artemis_program_%28solid_contrast_with_wordmark%29.svg/langfr-1024px-Artemis_program_%28solid_contrast_with_wordmark%29.svg.png\n",
+    "publishDate": "2024-05-23",
+    "labels": [
+        "science",
+        "international"
+    ],
+    "easyVersion": {
+        "content": "<p>La NASA prépare une nouvelle mission vers la Lune. Cette mission s'appelle Artemis. C'est un grand projet spatial. Le but est simple : envoyer des astronautes sur la Lune en 2025.</p>\n\n<p>Pour cette mission, la NASA utilise une nouvelle <vocab vocab-id=0>fusée</vocab>. Elle s'appelle SLS (Space Launch System). Cette <vocab vocab-id=0>fusée</vocab> est très <vocab vocab-id=1>puissante</vocab>. Elle peut porter beaucoup de matériel.</p>\n\n<p>Les astronautes vont voyager dans un <vocab vocab-id=2>vaisseau spatial</vocab>. Ce <vocab vocab-id=2>vaisseau</vocab> s'appelle Orion. Il est plus moderne que les anciennes <vocab vocab-id=2>vaisseaux</vocab> Apollo. Il est aussi plus <vocab vocab-id=3>confortable</vocab>.</p>\n\n<p>La mission a plusieurs <vocab vocab-id=4>objectifs</vocab>. D'abord, les astronautes vont explorer la surface de la Lune. Ils vont faire des expériences scientifiques. Ils vont aussi chercher de l'eau sur la Lune.</p>\n\n<p>Cette mission est très importante pour l'avenir. La NASA veut construire une <vocab vocab-id=5>base</vocab> sur la Lune. Plus tard, cette base aidera pour les voyages vers Mars.</p>",
+        "audioUrl": "https://cdn.example.com/artemis-easy.mp3",
+        "vocabulary": [
+            {
+                "word": "une fusée",
+                "translation": "ロケット",
+                "category": "noun"
+            },
+            {
+                "word": "puissante",
+                "translation": "強力な",
+                "category": "adjective"
+            },
+            {
+                "word": "un vaisseau spatial",
+                "translation": "宇宙船",
+                "category": "noun"
+            },
+            {
+                "word": "confortable",
+                "translation": "快適な",
+                "category": "adjective"
+            },
+            {
+                "word": "un objectif",
+                "translation": "目標",
+                "category": "noun"
+            },
+            {
+                "word": "une base",
+                "translation": "基地",
+                "category": "noun"
+            }
+        ],
+        "grammarPoints": [
+            {
+                "title": "Le présent de l'indicatif",
+                "explanation": "動詞の現在形について。主語に応じて動詞の形が変化します。",
+                "examples": [
+                    {
+                        "french": "La NASA prépare une mission",
+                        "japanese": "NASAはミッションを準備しています"
+                    },
+                    {
+                        "french": "Les astronautes vont explorer",
+                        "japanese": "宇宙飛行士たちは探査するでしょう"
+                    }
+                ]
+            },
+            {
+                "title": "Les articles définis (le, la, les)",
+                "explanation": "定冠詞の使い方。すでに知っているものや、一般的な概念を指すときに使います。",
+                "examples": [
+                    {
+                        "french": "la Lune",
+                        "japanese": "月（一般的に知られている天体として）"
+                    },
+                    {
+                        "french": "les astronautes",
+                        "japanese": "宇宙飛行士たち（特定のグループとして）"
+                    }
+                ]
+            }
+        ],
+        "questions": [
+            {
+                "id": 1,
+                "questionText": "Quel est le nom de la mission lunaire préparée par la NASA ?",
+                "options": [
+                    "Apollo",
+                    "Artemis",
+                    "SLS",
+                    "Orion"
+                ],
+                "correctAnswer": "Artemis"
+            },
+            {
+                "id": 2,
+                "questionText": "Comment s'appelle la nouvelle fusée utilisée par la NASA pour la mission Artemis ?",
+                "options": [
+                    "Falcon 9",
+                    "Saturn V",
+                    "SLS",
+                    "Atlas V"
+                ],
+                "correctAnswer": "SLS"
+            },
+            {
+                "id": 3,
+                "questionText": "Quel est l'objectif principal de la mission Artemis sur la Lune ?",
+                "options": [
+                    "Construire une base lunaire",
+                    "Chercher de l'eau et explorer la surface",
+                    "Envoyer des satellites",
+                    "Faire du tourisme spatial"
+                ],
+                "correctAnswer": "Chercher de l'eau et explorer la surface"
+            }
+        ]
+    },
+    "mediumVersion": {
+        "content": "<p>La NASA se prépare activement pour son ambitieux <vocab vocab-id=0>retour</vocab> sur la Lune dans le cadre de la mission Artemis. Ce programme spatial, d'une <vocab vocab-id=1>envergure</vocab> considérable, vise à établir une présence humaine durable sur notre satellite naturel d'ici 2025.</p>\n\n<p>Au cœur de cette mission se trouve le Space Launch System (SLS), une fusée d'une puissance sans précédent. Cette prouesse technologique est capable de <vocab vocab-id=2>propulser</vocab> non seulement la capsule habitée Orion, mais également tout le matériel nécessaire à l'établissement d'une présence prolongée sur la Lune.</p>\n\n<p>La capsule Orion représente une <vocab vocab-id=3>évolution</vocab> significative par rapport aux capsules Apollo de la génération précédente. Dotée de systèmes de survie plus <vocab vocab-id=4>sophistiqués</vocab> et d'une technologie de pointe, elle garantit un niveau de sécurité et de confort optimal pour les astronautes durant leur voyage.</p>\n\n<p>Les objectifs scientifiques de la mission sont multiples et <vocab vocab-id=5>ambitieux</vocab>. Les astronautes mèneront des expériences approfondies sur la surface lunaire, notamment la recherche de ressources exploitables comme l'eau glacée dans les cratères polaires. Ces découvertes pourraient s'avérer cruciales pour l'établissement d'une base lunaire permanente.</p>\n\n<p>Cette mission représente bien plus qu'un simple retour sur la Lune. Elle constitue une étape <vocab vocab-id=6>fondamentale</vocab> dans la stratégie d'exploration spatiale à long terme de la NASA. La base lunaire servira de tremplin pour les futures missions vers Mars, permettant de tester les technologies et les protocoles nécessaires aux voyages interplanétaires.</p>",
+        "audioUrl": "https://mega.nz/embed/2Y4nyCTQ#0-nVUB2DuvsVJZIE6nhGoT3MhYCT4qtQdro5Xj6vczw!1v1c",
+        "vocabulary": [
+            {
+                "word": "le retour",
+                "translation": "帰還",
+                "category": "noun"
+            },
+            {
+                "word": "une envergure",
+                "translation": "規模",
+                "category": "noun"
+            },
+            {
+                "word": "propulser",
+                "translation": "推進する",
+                "category": "verb"
+            },
+            {
+                "word": "une évolution",
+                "translation": "進化",
+                "category": "noun"
+            },
+            {
+                "word": "sophistiqué",
+                "translation": "高度な",
+                "category": "adjective"
+            },
+            {
+                "word": "ambitieux",
+                "translation": "野心的な",
+                "category": "adjective"
+            },
+            {
+                "word": "fondamental",
+                "translation": "基本的な、重要な",
+                "category": "adjective"
+            }
+        ],
+        "grammarPoints": [
+            {
+                "title": "Le futur proche",
+                "explanation": "近接未来。「aller + 不定詞」の形で、近い将来の行動を表現します。",
+                "examples": [
+                    {
+                        "french": "Les astronautes vont mener des expériences",
+                        "japanese": "宇宙飛行士たちは実験を行う予定です"
+                    }
+                ]
+            },
+            {
+                "title": "Les adjectifs qualificatifs",
+                "explanation": "形容詞の性数一致。名詞の性と数に応じて形容詞の形が変化します。",
+                "examples": [
+                    {
+                        "french": "une mission ambitieuse",
+                        "japanese": "野心的なミッション（女性単数形）"
+                    },
+                    {
+                        "french": "des systèmes sophistiqués",
+                        "japanese": "高度なシステム（男性複数形）"
+                    }
+                ]
+            },
+            {
+                "title": "Les propositions relatives",
+                "explanation": "関係代名詞（qui, que, dont）を使った複文の作り方。",
+                "examples": [
+                    {
+                        "french": "une fusée qui est capable de propulser",
+                        "japanese": "推進することができるロケット"
+                    }
+                ]
+            }
+        ],
+        "questions": [
+            {
+                "id": 1,
+                "questionText": "Quel est l'objectif de la mission Artemis prévue pour 2025 ?",
+                "options": [
+                    "Envoyer des satellites en orbite",
+                    "Faire du tourisme spatial",
+                    "Envoyer des astronautes sur la Lune",
+                    "Construire une station spatiale en orbite terrestre"
+                ],
+                "correctAnswer": "Envoyer des astronautes sur la Lune"
+            },
+            {
+                "id": 2,
+                "questionText": "Comment s'appelle le vaisseau spatial qui transportera les astronautes pour la mission Artemis ?",
+                "options": [
+                    "Orion",
+                    "Apollo",
+                    "SLS",
+                    "Discovery"
+                ],
+                "correctAnswer": "Orion"
+            },
+            {
+                "id": 3,
+                "questionText": "Pourquoi la mission Artemis est-elle importante pour l'avenir ?",
+                "options": [
+                    "Elle permettra de découvrir de nouvelles étoiles",
+                    "Elle aidera à construire une base sur la Lune pour les futures missions vers Mars",
+                    "Elle développera de nouvelles fusées plus rapides",
+                    "Elle établira une colonie permanente sur la Lune"
+                ],
+                "correctAnswer": "Elle aidera à construire une base sur la Lune pour les futures missions vers Mars"
+            }
+        ]
+    }
+}

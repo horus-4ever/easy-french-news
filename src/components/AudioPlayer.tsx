@@ -6,7 +6,7 @@ interface Props {
 
 export default function AudioPlayer({ src }: Props) {
   return (
-    <div className="overflow-x-scroll py-2">
+    <div className="overflow-x-scroll">
       <iframe width="711" height="144"
         src={src}
         className="border-none"

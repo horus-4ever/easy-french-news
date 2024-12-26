@@ -7,6 +7,7 @@ import { IArticle } from '@/models/Article';
 import VocabTable from '@/components/VocabTable';
 import GrammarSection from '@/components/GrammarSection';
 import AudioPlayer from '@/components/AudioPlayer';
+import QuizSection from '@/components/QuizSection';
 
 export default function ArticlePage() {
   const params = useParams();
@@ -70,10 +71,16 @@ export default function ArticlePage() {
 
         {/* Audio player */}
         <div className="mt-4">
-          <p className="font-semibold mb-2">Article Audio</p>
+          <p className="font-semibold">Article Audio</p>
           {/* A custom audio player or simple HTML <audio> */}
           <AudioPlayer src={version.audioUrl}></AudioPlayer>
         </div>
+
+        <br />
+        
+        {/* Quiz section */}
+        <QuizSection questions={version.questions} />
+        <br />
 
         {/* Grammar Section */}
         <GrammarSection grammarPoints={version.grammarPoints}/>
@@ -81,7 +88,7 @@ export default function ArticlePage() {
 
       {/* Right side panel for vocabulary & grammar */}
       <aside className="w-full md:w-1/3 bg-white rounded-md shadow p-4 h-fit self-start">
-        <h1 className="text-2xl font-semibold text-green-400">Vocabulaire (語彙)</h1>
+        <h1 className="text-2xl font-semibold text-green-400">🧠 Vocabulaire (語彙)</h1>
         <VocabTable vocabulary={version.vocabulary} />
       </aside>
 

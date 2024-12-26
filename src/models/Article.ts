@@ -1,5 +1,12 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 
+interface IQuestion {
+  id: number;
+  questionText: string;
+  options: string[];
+  correctAnswer: string;
+}
+
 interface IVocabulary {
   word: string;
   translation: string;
@@ -22,6 +29,7 @@ interface IArticleVersion {
   audioUrl: string;
   vocabulary: IVocabulary[];
   grammarPoints: IGrammarPoint[];
+  questions: IQuestion[];
 }
 
 export interface IArticle extends Document {
