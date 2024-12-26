@@ -1,5 +1,5 @@
 // lib/parseVocabHtml.ts
-import parse, { domToReact, Element } from 'html-react-parser';
+import parse, { DOMNode, domToReact, Element } from 'html-react-parser';
 import VocabWord from '@/components/VocabWord';
 
 interface IVocabulary {
@@ -15,7 +15,8 @@ export function parseVocabHtml(html: string, vocabList: IVocabulary[]) {
       // Only replace if it's <vocab>...</vocab>
       if (domNode instanceof Element && domNode.name === 'vocab') {
         // The text inside <vocab> ... </vocab>
-        const textContent = domToReact(domNode.children).toString().trim();
+        const children = (domNode as Element).children as DOMNode[];
+        const textContent = domToReact(children).toString().trim();
 
         // Attempt to find a matching object in `vocabList`
         const match = vocabList.find((v) => v.word === textContent);
