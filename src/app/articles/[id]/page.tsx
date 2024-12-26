@@ -2,8 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import ArticleDetail from '../../../components/ArticleDetail';
+import ArticleDetail from '@/components/ArticleDetail';
 import { IArticle } from '@/models/Article';
+import VocabTable from '@/components/VocabTable';
+import GrammarSection from '@/components/GrammarSection';
 
 export default function ArticlePage() {
   const params = useParams();
@@ -41,7 +43,7 @@ export default function ArticlePage() {
       {/* Main article content */}
       <div className="flex-1">
         <div className="flex items-center justify-between">
-          <h1 className="text-xl font-bold">{article.title}</h1>
+          <h1 className="text-2xl font-bold">{article.title}</h1>
           <div>
             <button
               onClick={() => setDifficulty('easy')}
@@ -73,37 +75,17 @@ export default function ArticlePage() {
             Your browser does not support the audio element.
           </audio>
         </div>
+
+        {/* Grammar Section */}
+        <GrammarSection grammarPoints={version.grammarPoints}/>
       </div>
 
       {/* Right side panel for vocabulary & grammar */}
       <aside className="w-full md:w-1/3 bg-white rounded-md shadow p-4 h-fit self-start">
-        <h2 className="text-lg font-semibold">Vocabulary</h2>
-        <ul className="list-disc list-inside mb-4">
-          {version.vocabulary.map((vocab, i) => (
-            <li key={i} className="my-1">
-              <strong>{vocab.word}</strong> - {vocab.translation}
-              {vocab.reading && ` (${vocab.reading})`}
-              {vocab.context && <em> — {vocab.context}</em>}
-            </li>
-          ))}
-        </ul>
-
-        <h2 className="text-lg font-semibold">Grammar Points</h2>
-        <div className="space-y-4">
-          {version.grammarPoints.map((grammar, i) => (
-            <div key={i}>
-              <h3 className="font-medium">{grammar.title}</h3>
-              <p>{grammar.explanation}</p>
-              {grammar.examples.map((ex, idx) => (
-                <div key={idx} className="ml-4 mt-2">
-                  <p className="italic">FR: {ex.french}</p>
-                  <p>JP: {ex.japanese}</p>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
+        <h1 className="text-2xl font-semibold text-green-400">Vocabulaire (語彙)</h1>
+        <VocabTable vocabulary={version.vocabulary} />
       </aside>
+
     </div>
   );
 }

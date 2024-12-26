@@ -1,6 +1,4 @@
-// components/VocabWord.tsx
-
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useRef, useEffect, useState } from 'react';
 
 interface VocabWordProps {
   word: string;
@@ -15,42 +13,60 @@ export default function VocabWord({
   reading,
   children
 }: VocabWordProps) {
+  const [position, setPosition] = useState<'left' | 'right' | 'center'>('center');
+  const tooltipRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const adjustTooltip = () => {
+      setPosition('center');
+      if (tooltipRef.current) {
+        const rect = tooltipRef.current.getBoundingClientRect();
+        const windowWidth = window.innerWidth;
+        console.log(word);
+        console.log(rect);
+
+        if (rect.left < 0) {
+          setPosition('right');
+        } else if (rect.right > windowWidth) {
+          setPosition('left');
+        } else {
+          setPosition('center');
+        }
+      }
+    };
+    // Adjust on mount and window resize
+    adjustTooltip();
+    window.addEventListener('resize', adjustTooltip);
+    
+    return () => window.removeEventListener('resize', adjustTooltip);
+  }, []);
+
   return (
     <span
       className="
         relative group 
         cursor-pointer 
-        text-blue-600 
+        text-orange-400 
         underline 
         underline-offset-2 
         decoration-dotted
       "
     >
-      {/* The visible text in the article (e.g. "fusée") */}
       {children}
-
-      {/* Tooltip container (hidden by default; appears on hover) */}
       <span
-        className="
+        ref={tooltipRef}
+        className={`
           pointer-events-none 
-          absolute left-1/2 bottom-full 
-          mb-2 
-          w-max 
-          -translate-x-1/2 
-          rounded 
-          border border-gray-200 
-          bg-white 
-          p-2 
-          text-sm 
-          text-gray-800 
-          opacity-0 
-          shadow 
-          transition-opacity 
-          group-hover:opacity-100
-        "
+          absolute bottom-full mb-2 w-max p-2 
+          rounded border border-gray-200 
+          bg-white text-lg text-gray-800 shadow 
+          opacity-0 transition-opacity group-hover:opacity-100
+          ${position === 'left' ? 'right-0' : ''}
+          ${position === 'right' ? 'left-0' : ''}
+          ${position === 'center' ? '-translate-x-1/2 left-1/2' : ''}
+        `}
       >
         <strong>{word}</strong>
-        {reading && <> ({reading})</>}
         <br />
         {translation}
       </span>

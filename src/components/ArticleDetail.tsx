@@ -16,7 +16,7 @@ interface ArticleDetailProps {
 
 export default function ArticleDetail({ content, vocabulary }: ArticleDetailProps) {
   return (
-    <div className="prose max-w-none">
+    <div className="prose max-w-none text-xl text-justify">
       {/* This function converts <vocab> text into <VocabWord> components */}
       {parseVocabHtml(content, vocabulary)}
     </div>
