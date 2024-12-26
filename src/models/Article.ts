@@ -2,9 +2,8 @@ import mongoose, { Schema, Document, Model } from 'mongoose';
 
 interface IVocabulary {
   word: string;
-  reading: string;
   translation: string;
-  context?: string; // optional
+  category: 'noun' | 'verb1' | 'verb2' | 'verb3' | 'adjective' | 'adverb' | 'expression';
 }
 
 interface IGrammarExample {
@@ -41,9 +40,8 @@ export interface IArticle extends Document {
 const VocabularySchema = new Schema<IVocabulary>(
   {
     word: { type: String, required: true },
-    reading: { type: String, required: false },
     translation: { type: String, required: true },
-    context: { type: String, required: false }
+    category: { type: String, required: true }
   },
   { _id: false }
 );

@@ -4,8 +4,7 @@ import React from 'react';
 interface IVocabulary {
   word: string;
   translation: string;
-  reading?: string;
-  context?: string;
+  category: string;
 }
 
 interface VocabTableProps {
@@ -25,7 +24,7 @@ export default function VocabTable({ vocabulary }: VocabTableProps) {
         <tbody>
           {vocabulary.map((vocab, index) => (
             <tr key={index} className="hover:bg-gray-50">
-              <td className="py-2 px-4 border">{vocab.word}</td>
+              <td className="py-2 px-4 border"><span className="font-bold">{vocab.word}</span>, <span className="text-sm italic">{vocab.category}</span></td>
               <td className="py-2 px-4 border">{vocab.translation}</td>
             </tr>
           ))}

@@ -3,14 +3,14 @@ import React, { ReactNode, useRef, useEffect, useState } from 'react';
 interface VocabWordProps {
   word: string;
   translation: string;
-  reading?: string;
+  category: string;
   children: ReactNode;
 }
 
 export default function VocabWord({
   word,
   translation,
-  reading,
+  category,
   children
 }: VocabWordProps) {
   const [position, setPosition] = useState<'left' | 'right' | 'center'>('center');

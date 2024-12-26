@@ -6,6 +6,7 @@ import ArticleDetail from '@/components/ArticleDetail';
 import { IArticle } from '@/models/Article';
 import VocabTable from '@/components/VocabTable';
 import GrammarSection from '@/components/GrammarSection';
+import AudioPlayer from '@/components/AudioPlayer';
 
 export default function ArticlePage() {
   const params = useParams();
@@ -71,9 +72,7 @@ export default function ArticlePage() {
         <div className="mt-4">
           <p className="font-semibold mb-2">Article Audio</p>
           {/* A custom audio player or simple HTML <audio> */}
-          <audio controls src={version.audioUrl} className="w-full">
-            Your browser does not support the audio element.
-          </audio>
+          <AudioPlayer src={version.audioUrl}></AudioPlayer>
         </div>
 
         {/* Grammar Section */}

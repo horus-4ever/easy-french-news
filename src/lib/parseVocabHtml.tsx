@@ -17,9 +17,10 @@ export function parseVocabHtml(html: string, vocabList: IVocabulary[]) {
         // The text inside <vocab> ... </vocab>
         const children = (domNode as Element).children as DOMNode[];
         const textContent = domToReact(children).toString().trim();
+        const vocabId = (domNode as Element).attribs['vocab-id'];
 
         // Attempt to find a matching object in `vocabList`
-        const match = vocabList.find((v) => v.word === textContent);
+        const match = vocabList[parseInt(vocabId, 10)];
 
         if (match) {
           // Wrap it in <VocabWord> so we can show a tooltip
@@ -27,7 +28,7 @@ export function parseVocabHtml(html: string, vocabList: IVocabulary[]) {
             <VocabWord
               word={match.word}
               translation={match.translation}
-              reading={match.reading}
+              category={match.category}
             >
               {textContent}
             </VocabWord>
