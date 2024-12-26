@@ -22,8 +22,6 @@ export default function VocabWord({
       if (tooltipRef.current) {
         const rect = tooltipRef.current.getBoundingClientRect();
         const windowWidth = window.innerWidth;
-        console.log(word);
-        console.log(rect);
 
         if (rect.left < 0) {
           setPosition('right');

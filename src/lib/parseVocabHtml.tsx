@@ -4,9 +4,8 @@ import VocabWord from '@/components/VocabWord';
 
 interface IVocabulary {
   word: string;
-  reading?: string;
+  category: string;
   translation: string;
-  context?: string; // Optional
 }
 
 export function parseVocabHtml(html: string, vocabList: IVocabulary[]) {

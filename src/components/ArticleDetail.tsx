@@ -4,9 +4,8 @@ import { parseVocabHtml } from '@/lib/parseVocabHtml';
 
 interface IVocabulary {
   word: string;
-  reading?: string;
+  category: string;
   translation: string;
-  context?: string;
 }
 
 interface ArticleDetailProps {
