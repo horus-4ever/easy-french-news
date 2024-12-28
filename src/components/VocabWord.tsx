@@ -54,6 +54,7 @@ export default function VocabWord({
       <span
         ref={tooltipRef}
         className={`
+          vocab-tooltip
           pointer-events-none 
           absolute bottom-full mb-2 w-max p-2 
           rounded border border-gray-200 

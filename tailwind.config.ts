@@ -6,6 +6,7 @@ module.exports = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx}',
     './src/context/**/*.{js,ts,jsx,tsx}',
+    './src/scripts/**/*.{js,ts,jsx,tsx}',
     // shadcn/ui
     './components/ui/**/*.{js,ts,jsx,tsx}'
   ],
