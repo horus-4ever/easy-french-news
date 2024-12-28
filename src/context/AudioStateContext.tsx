@@ -40,7 +40,7 @@ export function AudioStateProvider({ children }: { children: React.ReactNode }) 
   const [duration, setDuration] = useState(0);
 
   // If user presses close on mini-player, we store it here
-  const [miniPlayerClosed, setMiniPlayerClosed] = useState(false);
+  const [miniPlayerClosed, setMiniPlayerClosed] = useState(true);
 
   const value: AudioStateContextValue = {
     audioRef,

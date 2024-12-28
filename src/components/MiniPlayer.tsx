@@ -12,6 +12,7 @@ export default function MiniPlayer() {
     audioRef,
     playerContainerRef,
     isPlaying,
+    setIsPlaying,
     currentTime,
     duration,
     miniPlayerClosed,
@@ -22,7 +23,7 @@ export default function MiniPlayer() {
 
   // Only show if audio is playing, main player is NOT in view, 
   // and the user hasn’t closed the mini player
-  let shouldShow = isPlaying && !isMainPlayerInView && !miniPlayerClosed;
+  let shouldShow = !isMainPlayerInView && !miniPlayerClosed;
 
   if (!shouldShow) return null;
 
@@ -32,12 +33,14 @@ export default function MiniPlayer() {
     return `${m}:${s < 10 ? "0" : ""}${s}`;
   };
 
-  const handlePlayPause = () => {
-    if (!audioRef.current) return;
-    if (audioRef.current.paused) {
-      audioRef.current.play();
-    } else {
-      audioRef.current.pause();
+  const togglePlay = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
     }
   };
 
@@ -51,23 +54,23 @@ export default function MiniPlayer() {
       {/* Basic controls */}
       <div className="flex items-center space-x-2">
         <button
-          onClick={handlePlayPause}
+          onClick={togglePlay}
           className="bg-blue-500 text-white p-2 rounded-full"
         >
-          {isPlaying ? <FiPause /> : <FiPlay />}
+          {isPlaying ? <FiPause size={15} /> : <FiPlay size={15} />}
         </button>
 
         <button
           onClick={() => handleSkip(-5)}
           className="p-2 text-gray-600 hover:text-black"
         >
-          <RiReplay5Fill />
+          <RiReplay5Fill size={20} />
         </button>
         <button
           onClick={() => handleSkip(5)}
           className="p-2 text-gray-600 hover:text-black"
         >
-          <RiForward5Fill />
+          <RiForward5Fill size={20} />
         </button>
 
         <div className="text-sm text-gray-600">
