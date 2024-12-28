@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import ArticleCard from '@/components/ArticleCard';
-import { migrateDates } from '@/scripts/migrate';
 
 type Article = {
   _id: string;
