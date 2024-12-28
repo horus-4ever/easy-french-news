@@ -1,4 +1,5 @@
 // components/ArticleDetail.tsx
+"use client";
 import React from 'react';
 import { parseVocabHtml } from '@/lib/parseVocabHtml';
 

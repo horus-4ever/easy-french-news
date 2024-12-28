@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import { FaChevronDown, FaChevronRight } from 'react-icons/fa';
 import GrammarPoint from '@/components/GrammarPoint';

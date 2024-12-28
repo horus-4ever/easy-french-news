@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import QuizQuestion from '@/components/QuizQuestion';
 import { FaChevronDown, FaChevronRight } from 'react-icons/fa';

@@ -1,20 +1,68 @@
+"use client";
+
 import React, { useRef, useState, useEffect } from 'react';
 import { FiSettings, FiPlay, FiPause, FiX } from 'react-icons/fi';
 import { RiForward5Fill, RiReplay5Fill } from "react-icons/ri";
+import { useAudioState } from '@/context/AudioStateContext';
 
 interface Props {
   src: string;
 }
 
 export default function AudioPlayer({ src }: Props) {
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const progressBarRef = useRef<HTMLDivElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const progressBarDesktopRef = useRef<HTMLDivElement>(null);
+  const progressBarMobileRef = useRef<HTMLDivElement>(null);
+  const {
+    audioRef,
+    playerContainerRef,
+    isPlaying,
+    setIsPlaying,
+    currentTime,
+    setCurrentTime,
+    duration,
+    setDuration,
+    setMiniPlayerClosed
+  } = useAudioState();
+
+  // optional local states
   const [speed, setSpeed] = useState(1);
   const [showSettings, setShowSettings] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(1);
+  const [playerElement, setPlayerElement] = useState<HTMLDivElement | null>(null);
+
+  // We keep your existing useEffect, but we set audioRef.current = new Audio().
+  // If there's already an <audio> in audioRef, we won't re-create it.
+  useEffect(() => {
+    if (!audioRef.current) {
+      audioRef.current = new Audio();
+    }
+    const audio = audioRef.current;
+    // set the src
+    audio.src = src;
+
+    const handleTimeUpdate = () => {
+      setCurrentTime(audio.currentTime);
+    };
+    const handleLoadedMetadata = () => {
+      setDuration(audio.duration);
+    };
+    const handleEnded = () => {
+      setIsPlaying(false);
+      setCurrentTime(0);
+    };
+
+    audio.addEventListener("timeupdate", handleTimeUpdate);
+    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+    audio.addEventListener("ended", handleEnded);
+
+    // remove listeners on cleanup
+    return () => {
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
+      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      audio.removeEventListener("ended", handleEnded);
+    };
+  }, [src, audioRef, setCurrentTime, setDuration, setIsPlaying]);
+
 
   useEffect(() => {
     if (audioRef.current) {
@@ -39,6 +87,7 @@ export default function AudioPlayer({ src }: Props) {
       } else {
         audioRef.current.play();
       }
+      setMiniPlayerClosed(false);
       setIsPlaying(!isPlaying);
     }
   };
@@ -64,9 +113,9 @@ export default function AudioPlayer({ src }: Props) {
     }
   };
 
-  const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (progressBarRef.current && audioRef.current) {
-      const rect = progressBarRef.current.getBoundingClientRect();
+  const handleSeek = (e: React.MouseEvent<HTMLDivElement>, ref: React.RefObject<HTMLDivElement>) => {
+    if (ref.current && audioRef.current) {
+      const rect = ref.current.getBoundingClientRect();
       const clickPosition = e.clientX - rect.left;
       const percentage = clickPosition / rect.width;
       audioRef.current.currentTime = percentage * duration;
@@ -81,7 +130,7 @@ export default function AudioPlayer({ src }: Props) {
   };
 
   return (
-    <div className="audio-player w-full flex flex-col items-center p-6 bg-white rounded-lg shadow-lg border border-gray-200">
+    <div ref={playerContainerRef} className="audio-player w-full flex flex-col items-center p-6 bg-white rounded-lg shadow-lg border border-gray-200">
       <h3 className="font-semibold mb-3 text-lg flex items-center">
         🎧 Article Audio
       </h3>
@@ -101,9 +150,9 @@ export default function AudioPlayer({ src }: Props) {
 
           {/* Seekable Progress Bar */}
           <div
-            ref={progressBarRef}
-            className="flex-1 h-2 bg-gray-300 rounded overflow-hidden cursor-pointer"
-            onClick={handleSeek}
+            ref={progressBarDesktopRef}
+            className="flex-1 h-2 bg-gray-300 rounded w-full overflow-hidden cursor-pointer"
+            onClick={(e) => handleSeek(e, progressBarDesktopRef)}
           >
             <div
               className="h-2 bg-blue-500 rounded"
@@ -152,9 +201,9 @@ export default function AudioPlayer({ src }: Props) {
           </button>
 
           <div
-            ref={progressBarRef}
-            className="flex-1 h-2 bg-gray-300 rounded overflow-hidden cursor-pointer"
-            onClick={handleSeek}
+            ref={progressBarMobileRef}
+            className="flex-1 h-2 bg-gray-300 rounded overflow-hidden cursor-pointer w-full"
+            onClick={(e) => handleSeek(e, progressBarMobileRef)}
           >
             <div
               className="h-2 bg-blue-500 rounded"

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { ReactNode, useRef, useEffect, useState } from 'react';
 
 interface VocabWordProps {

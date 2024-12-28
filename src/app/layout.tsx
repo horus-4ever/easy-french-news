@@ -1,8 +1,14 @@
+// src/app/layout.tsx
 import './globals.css';
 import React from 'react';
 import { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import AppContextProvider from '@/context/AppContext';
+
+// (new) import
+import { AudioStateProvider } from '@/context/AudioStateContext';
+// (new) import
+import MiniPlayer from '@/components/MiniPlayer';
 
 export const metadata: Metadata = {
   title: 'French Learning App',
@@ -18,10 +24,17 @@ export default function RootLayout({
     <html lang="fr">
       <body>
         <AppContextProvider>
-          <Navbar />
-          <main className="min-h-screen bg-gray-50 p-4">{children}</main>
+          {/* Provide global audio state */}
+          <AudioStateProvider>
+            <Navbar />
+            <main className="min-h-screen bg-gray-50 p-4">{children}</main>
+
+            {/* Render the mini-player at the bottom so it’s always present */}
+            <MiniPlayer />
+          </AudioStateProvider>
         </AppContextProvider>
       </body>
     </html>
   );
 }
+

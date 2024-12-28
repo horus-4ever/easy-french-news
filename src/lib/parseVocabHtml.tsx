@@ -1,4 +1,6 @@
 // lib/parseVocabHtml.ts
+"use client";
+
 import parse, { DOMNode, domToReact, Element } from 'html-react-parser';
 import VocabWord from '@/components/VocabWord';
 

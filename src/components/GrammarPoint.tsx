@@ -1,4 +1,5 @@
 // components/GrammarPoint.tsx
+"use client";
 import React from 'react';
 
 interface Example {
