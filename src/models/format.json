@@ -1,0 +1,78 @@
+{
+    "_id": {
+        "$oid": "string"
+    },
+    "title": "string",
+    "sourceUrl": "string",
+    "imageUrl": "string",
+    "publishDate": "string",
+    "labels": [
+        "string"
+    ],
+    "easyVersion": {
+        "content": "string",
+        "audioUrl": "string",
+        "vocabulary": [
+            {
+                "word": "string",
+                "translation": "string",
+                "category": "string"
+            }
+        ],
+        "grammarPoints": [
+            {
+                "title": "string",
+                "explanation": "string",
+                "examples": [
+                    {
+                        "french": "string",
+                        "japanese": "string"
+                    }
+                ]
+            }
+        ],
+        "questions": [
+            {
+                "id": "number",
+                "questionText": "string",
+                "options": [
+                    "string"
+                ],
+                "correctAnswer": "string"
+            }
+        ]
+    },
+    "mediumVersion": {
+        "content": "string",
+        "audioUrl": "string",
+        "vocabulary": [
+            {
+                "word": "string",
+                "translation": "string",
+                "category": "string"
+            }
+        ],
+        "grammarPoints": [
+            {
+                "title": "string",
+                "explanation": "string",
+                "examples": [
+                    {
+                        "french": "string",
+                        "japanese": "string"
+                    }
+                ]
+            }
+        ],
+        "questions": [
+            {
+                "id": "number",
+                "questionText": "string",
+                "options": [
+                    "string"
+                ],
+                "correctAnswer": "string"
+            }
+        ]
+    }
+}
