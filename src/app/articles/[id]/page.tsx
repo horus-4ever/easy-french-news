@@ -71,7 +71,6 @@ export default function ArticlePage() {
 
         {/* Audio player */}
         <div className="mt-4">
-          <p className="font-semibold">Article Audio</p>
           {/* A custom audio player or simple HTML <audio> */}
           <AudioPlayer src={version.audioUrl}></AudioPlayer>
         </div>
