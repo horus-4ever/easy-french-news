@@ -5,7 +5,7 @@
     "title": "string",
     "sourceUrl": "string",
     "imageUrl": "string",
-    "publishDate": "string",
+    "publishDate": {"$date":{"$numberLong":"string"}},
     "labels": [
         "string"
     ],

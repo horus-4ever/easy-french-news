@@ -275,12 +275,11 @@ export default function AudioPlayer({ src }: Props) {
                 onChange={(e) => handleSpeedChange(parseFloat(e.target.value))}
                 className="p-2 border rounded-md"
               >
-                <option value="0.5">0.5x</option>
-                <option value="0.75">0.75x</option>
+                <option value="0.7">0.7x</option>
+                <option value="0.85">0.85x</option>
                 <option value="1">1x</option>
-                <option value="1.25">1.25x</option>
-                <option value="1.5">1.5x</option>
-                <option value="2">2x</option>
+                <option value="1.15">1.15x</option>
+                <option value="1.3">1.3x</option>
               </select>
             </div>
 

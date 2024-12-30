@@ -5,7 +5,7 @@ import Article from '@/models/Article';
 
 export async function GET() {
   try {
-    const labels: Array<string> = ["science", "international", "France", "climat", "culture"];
+    const labels: Array<string> = ["science", "international", "France", "climat", "culture", "politique"];
     return NextResponse.json({ success: true, data: labels });
   } catch (error: any) {
     return NextResponse.json(

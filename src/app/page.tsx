@@ -2,7 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 import ArticleCard from '@/components/ArticleCard';
+import { FiFilter } from 'react-icons/fi';
 
+// Article Type
 type Article = {
   _id: string;
   title: string;
@@ -19,9 +21,8 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  
+  const [showFilter, setShowFilter] = useState(false);
 
-  // 1. Fetch label list
   useEffect(() => {
     const fetchLabels = async () => {
       try {
@@ -37,11 +38,9 @@ export default function HomePage() {
     fetchLabels();
   }, []);
 
-  // 2. A function to fetch articles for a given page & tag filters
   const fetchArticles = async (pageNumber: number, tags: string[]) => {
     setLoading(true);
     try {
-      // Build query string, e.g. ?tags=science&tags=espace&page=1&limit=3
       const params = new URLSearchParams();
       tags.forEach((tag) => params.append('tags', tag));
       params.append('page', String(pageNumber));
@@ -51,14 +50,7 @@ export default function HomePage() {
       const json = await res.json();
 
       if (json.success) {
-        // if we got fewer than 3 articles, means no more
-        if (json.data.length < 3) {
-          setHasMore(false);
-        } else {
-          setHasMore(true);
-        }
-
-        // if pageNumber == 1, we replace articles, else we append
+        setHasMore(json.data.length === 3);
         if (pageNumber === 1) {
           setArticles(json.data);
         } else {
@@ -72,72 +64,81 @@ export default function HomePage() {
     }
   };
 
-  // 3. When tags change, reset to page=1
   useEffect(() => {
     setPage(1);
     fetchArticles(1, selectedTags);
   }, [selectedTags]);
 
-  // 4. When page changes (except the very first page=1 due to tags change), fetch the next page
   useEffect(() => {
     if (page > 1) {
       fetchArticles(page, selectedTags);
     }
   }, [page]);
 
-  // 5. Scroll listener
   useEffect(() => {
     const handleScroll = () => {
-      // if scrolled to near the bottom
       if (
         window.innerHeight + window.scrollY >= document.body.offsetHeight - 100
       ) {
-        // if not loading and we still have more data
         if (!loading && hasMore) {
           setPage((prev) => prev + 1);
         }
       }
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [loading, hasMore]);
 
-  // 6. Handler for toggling a tag
+  const toggleFilter = () => {
+    setShowFilter((prev) => !prev);
+  };
+
   const handleTagChange = (tagName: string) => {
-    setSelectedTags((prev) => {
-      // If tag is already selected, unselect it
-      if (prev.includes(tagName)) {
-        return prev.filter((t) => t !== tagName);
-      }
-      // Otherwise, add it
-      return [...prev, tagName];
-    });
+    setSelectedTags((prev) =>
+      prev.includes(tagName)
+        ? prev.filter((t) => t !== tagName)
+        : [...prev, tagName]
+    );
   };
 
   return (
-    <div className="container mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Latest Articles</h1>
-
-      {/* Tag Filters */}
-      <div className="mb-4">
-        <h2 className="font-semibold mb-2">Filter by Tags</h2>
-        <div className="flex flex-wrap gap-4">
-          {labels.map((label) => (
-            <label key={label} className="inline-flex items-center space-x-2">
-              <input
-                type="checkbox"
-                value={label}
-                checked={selectedTags.includes(label)}
-                onChange={() => handleTagChange(label)}
-              />
-              <span>{label}</span>
-            </label>
-          ))}
-        </div>
+    <div className="container mx-auto p-4">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Derniers articles</h1>
+        <button
+          onClick={toggleFilter}
+          className="flex items-center gap-2 px-4 py-2 border rounded-lg bg-green-600 text-white hover:bg-green-700"
+        >
+          <FiFilter /> Filtres
+        </button>
       </div>
 
-      {/* Article List */}
+      {showFilter && (
+        <div className="bg-white p-4 rounded-lg mb-6 shadow">
+          <h2 className="font-semibold mb-2">Filtrer par tags</h2>
+          <div className="flex flex-wrap gap-3">
+            {labels.map((label) => (
+              <label
+                key={label}
+                className={`flex items-center gap-2 cursor-pointer px-4 py-2 rounded-lg border shadow-sm ${selectedTags.includes(label) ? 'bg-green-100 border-green-500' : 'bg-white hover:shadow-md'}`}
+              >
+                <input
+                  type="checkbox"
+                  value={label}
+                  checked={selectedTags.includes(label)}
+                  onChange={() => handleTagChange(label)}
+                  className="hidden"
+                />
+                <div
+                  className={`w-5 h-5 border-2 rounded-md ${selectedTags.includes(label) ? 'bg-green-500 border-green-500' : 'border-gray-400'}`}
+                ></div>
+                <span>{label}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {articles.map((article) => (
           <ArticleCard
@@ -151,9 +152,8 @@ export default function HomePage() {
         ))}
       </div>
 
-      {/* Loading indicator at the bottom */}
-      {loading && <p className="text-center mt-4">Loading...</p>}
-      {!hasMore && <p className="text-center mt-4">No more articles.</p>}
+      {loading && <p className="text-center mt-6">Loading...</p>}
+      {!hasMore && <p className="text-center mt-6">No more articles.</p>}
     </div>
   );
 }

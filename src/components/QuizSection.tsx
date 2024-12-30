@@ -19,7 +19,7 @@ export default function QuizSection({ questions }: QuizSectionProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <section className="border rounded-md shadow p-4 mt-2">
+    <section className="bg-white border rounded-md shadow p-4 mt-2">
       <button
         className="w-full text-left font-bold text-lg flex justify-between"
         onClick={() => setIsOpen(!isOpen)}
