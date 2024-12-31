@@ -39,18 +39,3 @@ export async function GET(request: NextRequest) {
     );
   }
 }
-  
-
-/**
- * POST create new article
- */
-export async function POST(request: Request) {
-  try {
-    await dbConnect();
-    const body = await request.json();
-    const newArticle = await Article.create(body);
-    return NextResponse.json({ success: true, data: newArticle }, { status: 201 });
-  } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 400 });
-  }
-}
