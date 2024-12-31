@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import ArticleCard from '@/components/ArticleCard';
+import ArticleCard from '@/components/article/ArticleCard';
 import { FiFilter } from 'react-icons/fi';
+import { useArticles } from '@/hooks/useArticles';
 
 // Article Type
 type Article = {
@@ -14,14 +15,15 @@ type Article = {
 };
 
 export default function HomePage() {
-  const [articles, setArticles] = useState<Article[]>([]);
   const [labels, setLabels] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-  const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
   const [showFilter, setShowFilter] = useState(false);
+
+  const { articles, loading, hasMore, setPage } = useArticles({
+    tags: selectedTags,
+    limit: 4,
+  });
 
   useEffect(() => {
     const fetchLabels = async () => {
@@ -37,43 +39,6 @@ export default function HomePage() {
     };
     fetchLabels();
   }, []);
-
-  const fetchArticles = async (pageNumber: number, tags: string[]) => {
-    setLoading(true);
-    try {
-      const params = new URLSearchParams();
-      tags.forEach((tag) => params.append('tags', tag));
-      params.append('page', String(pageNumber));
-      params.append('limit', '3');
-
-      const res = await fetch(`/api/articles?${params.toString()}`);
-      const json = await res.json();
-
-      if (json.success) {
-        setHasMore(json.data.length === 3);
-        if (pageNumber === 1) {
-          setArticles(json.data);
-        } else {
-          setArticles((prev) => [...prev, ...json.data]);
-        }
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    setPage(1);
-    fetchArticles(1, selectedTags);
-  }, [selectedTags]);
-
-  useEffect(() => {
-    if (page > 1) {
-      fetchArticles(page, selectedTags);
-    }
-  }, [page]);
 
   useEffect(() => {
     const handleScroll = () => {

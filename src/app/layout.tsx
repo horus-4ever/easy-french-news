@@ -8,7 +8,7 @@ import AppContextProvider from '@/context/AppContext';
 // (new) import
 import { AudioStateProvider } from '@/context/AudioStateContext';
 // (new) import
-import MiniPlayer from '@/components/MiniPlayer';
+import MiniPlayer from '@/components/audio/MiniPlayer';
 
 export const metadata: Metadata = {
   title: 'French Learning App',

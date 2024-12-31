@@ -2,38 +2,19 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import ArticleDetail from '@/components/ArticleDetail';
+import ArticleDetail from '@/components/article/ArticleDetail';
 import { IArticle } from '@/models/Article';
-import VocabTable from '@/components/VocabTable';
-import GrammarSection from '@/components/GrammarSection';
-import AudioPlayer from '@/components/AudioPlayer';
-import QuizSection from '@/components/QuizSection';
+import VocabTable from '@/components/article/VocabTable';
+import GrammarSection from '@/components/article/GrammarSection';
+import AudioPlayer from '@/components/audio/AudioPlayer';
+import QuizSection from '@/components/article/QuizSection';
+import DifficultyToggle from '@/components/article/DifficultyToggle';
+import { useArticle } from '@/hooks/useArticle';
 
 export default function ArticlePage() {
-  const params = useParams();
-  const { id } = params as { id: string };
-
-  const [article, setArticle] = useState<IArticle | null>(null);
+  const { id } = useParams() as { id: string };
+  const { article, loading } = useArticle(id);
   const [difficulty, setDifficulty] = useState<'easy' | 'medium'>('easy');
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchArticle = async () => {
-      try {
-        setLoading(true);
-        const res = await fetch(`/api/articles/${id}`);
-        const json = await res.json();
-        if (json.success) {
-          setArticle(json.data);
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    if (id) fetchArticle();
-  }, [id]);
 
   if (loading) return <p>Loading...</p>;
   if (!article) return <p>Article not found.</p>;
@@ -46,24 +27,7 @@ export default function ArticlePage() {
       <div className="flex-1">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">{article.title}</h1>
-          <div>
-            <button
-              onClick={() => setDifficulty('easy')}
-              className={`mr-2 px-4 py-2 rounded ${
-                difficulty === 'easy' ? 'bg-blue-600 text-white' : 'bg-gray-200'
-              }`}
-            >
-              Easy
-            </button>
-            <button
-              onClick={() => setDifficulty('medium')}
-              className={`px-4 py-2 rounded ${
-                difficulty === 'medium' ? 'bg-blue-600 text-white' : 'bg-gray-200'
-              }`}
-            >
-              Medium
-            </button>
-          </div>
+          <DifficultyToggle difficulty={difficulty} onChange={setDifficulty} />
         </div>
 
         {/* Reusable component to display the article HTML, etc. */}
