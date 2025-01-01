@@ -33,6 +33,11 @@ export default function ArticlePage() {
         {/* Reusable component to display the article HTML, etc. */}
         <ArticleDetail content={version.content} vocabulary={version.vocabulary} />
 
+        {/* Link to original article (subtle) */}
+        <div className="text-right text-sm text-gray-400 mt-2">
+          <a href={article.sourceUrl} target="_blank" rel="noopener noreferrer">Article original</a>
+        </div>
+
         {/* Audio player */}
         <div className="mt-4">
           {/* A custom audio player or simple HTML <audio> */}

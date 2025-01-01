@@ -13,6 +13,7 @@
     "@types/react-dom": "^18.0.11",
     "autoprefixer": "^10.4.0",
     "clsx": "^1.2.1",
+    "french-verbs-lefff": "^3.4.0",
     "html-react-parser": "^5.2.1",
     "mongoose": "^7.0.0",
     "next": "^15.1.2",
