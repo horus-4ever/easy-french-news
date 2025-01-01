@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import ConjugationTable from '@/components/conjugation/ConjugationTable';
 import Participles from '@/components/conjugation/Participles';
+import { checkIfVerbExists } from '@/lib/api';
 
 interface ConjugationPopupProps {
   verb: string;
@@ -17,7 +18,22 @@ export default function ConjugationPopup({ verb, onClose }: ConjugationPopupProp
   useEffect(() => {
     const fetchConjugation = async () => {
       try {
-        const response = await fetch(`/api/conjugate/${verb}`);
+        // Split the input by spaces and filter empty strings
+        const words = verb.split(' ').filter(Boolean);
+        
+        let foundVerb = null;
+
+        // Check each word to see if it's a verb
+        for (const word of words) {
+          const exists = await checkIfVerbExists(word);
+          if (exists) {
+            foundVerb = word;
+            break;
+          }
+        }
+        // Fallback to the first word if no verb is found
+        const verbToFetch = foundVerb || words[0];
+        const response = await fetch(`/api/conjugate/${foundVerb}`);
         const data = await response.json();
         setConjugations(data.conjugation);
       } catch (error) {
@@ -33,8 +49,15 @@ export default function ConjugationPopup({ verb, onClose }: ConjugationPopupProp
   if (!conjugations) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="bg-white p-6 rounded-md shadow-lg w-[90%] max-w-screen-sm">
+        <div className="flex items-center justify-center bg-white p-6 rounded-md shadow-lg w-[90%] max-w-screen-sm">
           <p>Loading...</p>
+          {/* Close Button */}
+          <button
+            className="text-3xl text-gray-500 hover:text-gray-800 transition"
+            onClick={onClose}
+          >
+            &times;
+          </button>
         </div>
       </div>
     );
