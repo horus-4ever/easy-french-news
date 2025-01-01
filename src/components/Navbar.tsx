@@ -15,7 +15,6 @@ export default function Navbar() {
       setNavHeight(navRef.current["offsetHeight"]);
     }
 
-    // Update height on window resize
     const handleResize = () => {
       if (navRef.current) {
         setNavHeight(navRef.current["offsetHeight"]);
@@ -25,6 +24,20 @@ export default function Navbar() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Disable/Enable scrolling based on mobile menu state
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    // Cleanup when component unmounts
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [open]);
 
   return (
     <>
@@ -72,7 +85,7 @@ export default function Navbar() {
         className={`fixed top-0 bottom-0 right-0 bg-blue-950 bg-opacity-90 backdrop-blur-md transform transition-all duration-500 ${
           open ? 'translate-x-0' : 'translate-x-full'
         } z-40`}
-        style={{ width: '100%', top: `${navHeight}px` }}  // Dynamic height + width for slide-in effect
+        style={{ width: '100%', top: `${navHeight}px` }}
       >
         <div className="flex flex-col items-center justify-center h-full space-y-10">
           <Link

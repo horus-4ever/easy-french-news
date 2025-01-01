@@ -18,12 +18,9 @@ export default function ConjugationPopup({ verb, onClose }: ConjugationPopupProp
   useEffect(() => {
     const fetchConjugation = async () => {
       try {
-        // Split the input by spaces and filter empty strings
         const words = verb.split(' ').filter(Boolean);
-        
         let foundVerb = null;
 
-        // Check each word to see if it's a verb
         for (const word of words) {
           const exists = await checkIfVerbExists(word);
           if (exists) {
@@ -31,9 +28,8 @@ export default function ConjugationPopup({ verb, onClose }: ConjugationPopupProp
             break;
           }
         }
-        // Fallback to the first word if no verb is found
         const verbToFetch = foundVerb || words[0];
-        const response = await fetch(`/api/conjugate/${foundVerb}`);
+        const response = await fetch(`/api/conjugate/${verbToFetch}`);
         const data = await response.json();
         setConjugations(data.conjugation);
       } catch (error) {
@@ -44,6 +40,16 @@ export default function ConjugationPopup({ verb, onClose }: ConjugationPopupProp
     fetchConjugation();
   }, [verb]);
 
+  useEffect(() => {
+    // Disable scrolling when the popup is open
+    document.body.style.overflow = 'hidden';
+
+    // Cleanup to re-enable scrolling when the popup closes
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
+
   const pronouns = ['je', 'tu', 'il/elle', 'nous', 'vous', 'ils/elles'];
 
   if (!conjugations) {
@@ -51,7 +57,6 @@ export default function ConjugationPopup({ verb, onClose }: ConjugationPopupProp
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
         <div className="flex items-center justify-center bg-white p-6 rounded-md shadow-lg w-[90%] max-w-screen-sm">
           <p>Loading...</p>
-          {/* Close Button */}
           <button
             className="text-3xl text-gray-500 hover:text-gray-800 transition"
             onClick={onClose}
@@ -75,14 +80,11 @@ export default function ConjugationPopup({ verb, onClose }: ConjugationPopupProp
           &times;
         </button>
 
-        {/* Title */}
         <h2 className="text-4xl font-extrabold text-center mb-6 text-blue-500">
           {verb}
         </h2>
 
-        {/* Scrollable Content */}
         <div className="overflow-y-auto px-2 sm:px-4" style={{ maxHeight: '70vh' }}>
-          {/* Centered Participles */}
           <div className="mb-6 w-full">
             <Participles conjugations={conjugations} />
           </div>
@@ -112,7 +114,6 @@ export default function ConjugationPopup({ verb, onClose }: ConjugationPopupProp
               pronouns={pronouns}
               color="bg-red-50 border-red-200"
             />
-            {/* Subjonctif Présent Table */}
             <ConjugationTable
               title="Subjonctif Présent (接現)"
               conjugations={conjugations['S']}
