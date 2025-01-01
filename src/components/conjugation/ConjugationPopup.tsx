@@ -60,34 +60,41 @@ export default function ConjugationPopup({ verb, onClose }: ConjugationPopupProp
         {/* Scrollable Content */}
         <div className="overflow-y-auto px-2 sm:px-4" style={{ maxHeight: '70vh' }}>
           {/* Centered Participles */}
-        <div className="mb-6 w-full">
-          <Participles conjugations={conjugations} />
-        </div>
+          <div className="mb-6 w-full">
+            <Participles conjugations={conjugations} />
+          </div>
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             <ConjugationTable
-              title="Présent"
+              title="Présent (直現)"
               conjugations={conjugations['P']}
               pronouns={pronouns}
               color="bg-blue-50 border-blue-200"
             />
             <ConjugationTable
-              title="Futur"
+              title="Futur (直単未)"
               conjugations={conjugations['F']}
               pronouns={pronouns}
               color="bg-green-50 border-green-200"
             />
             <ConjugationTable
-              title="Imparfait"
+              title="Imparfait (直半)"
               conjugations={conjugations['I']}
               pronouns={pronouns}
               color="bg-yellow-50 border-yellow-200"
             />
             <ConjugationTable
-              title="Conditionnel"
+              title="Conditionnel (条現)"
               conjugations={conjugations['C']}
               pronouns={pronouns}
               color="bg-red-50 border-red-200"
+            />
+            {/* Subjonctif Présent Table */}
+            <ConjugationTable
+              title="Subjonctif Présent (接現)"
+              conjugations={conjugations['S']}
+              pronouns={pronouns}
+              color="bg-purple-50 border-purple-200"
             />
           </div>
         </div>
