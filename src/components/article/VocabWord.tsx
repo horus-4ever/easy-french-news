@@ -16,33 +16,47 @@ export default function VocabWord({
   children
 }: VocabWordProps) {
   const [position, setPosition] = useState<'left' | 'right' | 'center'>('center');
+  const [visible, setVisible] = useState(false);
   const tooltipRef = useRef<HTMLSpanElement>(null);
+  const parentRef = useRef<HTMLSpanElement>(null);
+
+  const adjustTooltip = () => {
+    if (tooltipRef.current) {
+      const rect = tooltipRef.current.getBoundingClientRect();
+      const windowWidth = window.outerWidth;
+      if (rect.left < 0) {
+        setPosition('right');
+      } else if (rect.right > windowWidth) {
+        setPosition('left');
+      } else {
+        setPosition('center');
+      }
+    }
+  };
+
+  const handleMouseEnter = () => {
+    setVisible(true);
+  };
+
+  const handleMouseLeave = () => {
+    setVisible(false);
+  };
 
   useEffect(() => {
-    const adjustTooltip = () => {
-      setPosition('center');
-      if (tooltipRef.current) {
-        const rect = tooltipRef.current.getBoundingClientRect();
-        const windowWidth = window.innerWidth;
-
-        if (rect.left < 0) {
-          setPosition('right');
-        } else if (rect.right > windowWidth) {
-          setPosition('left');
-        } else {
-          setPosition('center');
-        }
-      }
-    };
-    // Adjust on mount and window resize
-    adjustTooltip();
     window.addEventListener('resize', adjustTooltip);
-    
     return () => window.removeEventListener('resize', adjustTooltip);
   }, []);
 
+  useEffect(() => {
+    if(visible) adjustTooltip();
+    else setPosition('center');
+  }, [visible]);
+
   return (
     <span
+      ref={parentRef}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       className="
         relative group 
         cursor-pointer 
@@ -53,24 +67,28 @@ export default function VocabWord({
       "
     >
       {children}
-      <span
-        ref={tooltipRef}
-        className={`
-          vocab-tooltip
-          pointer-events-none 
-          absolute bottom-full mb-2 w-max p-2 
-          rounded border border-gray-200 
-          bg-white text-lg text-gray-800 shadow 
-          opacity-0 transition-opacity group-hover:opacity-100
-          ${position === 'left' ? 'right-0' : ''}
-          ${position === 'right' ? 'left-0' : ''}
-          ${position === 'center' ? '-translate-x-1/2 left-1/2' : ''}
-        `}
-      >
-        <strong>{word}</strong>
-        <br />
-        {translation}
-      </span>
+      {visible && (
+        <span
+          ref={tooltipRef}
+          className={`
+            overflow-hidden
+            vocab-tooltip
+            pointer-events-none 
+            absolute bottom-full mb-2 w-max p-2 
+            rounded border border-gray-200 
+            bg-white text-lg text-gray-800 shadow 
+            transition-opacity 
+            ${position === 'left' ? 'right-0' : ''}
+            ${position === 'right' ? 'left-0' : ''}
+            ${position === 'center' ? '-translate-x-1/2 left-1/2' : ''}
+            opacity-100
+          `}
+        >
+          <strong>{word}</strong>
+          <br />
+          {translation}
+        </span>
+      )}
     </span>
   );
 }
