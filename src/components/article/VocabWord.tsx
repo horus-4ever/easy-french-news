@@ -28,8 +28,6 @@ export default function VocabWord({
         setPosition('right');
       } else if (rect.right > windowWidth) {
         setPosition('left');
-      } else {
-        setPosition('center');
       }
     }
   };
@@ -49,7 +47,6 @@ export default function VocabWord({
 
   useEffect(() => {
     if(visible) adjustTooltip();
-    else setPosition('center');
   }, [visible]);
 
   return (
