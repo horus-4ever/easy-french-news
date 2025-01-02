@@ -59,3 +59,6 @@ The goal is to bridge the language gap by making French news more accessible and
 
 ### Conjugation of verbs
 ![alt text](demo-images/conjugation.png)
+
+### Mobile view and dark mode
+![alt text](demo-images/mobile-view.png)
