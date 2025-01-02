@@ -16,13 +16,13 @@ export default function ArticlePage() {
   const { article, loading } = useArticle(id);
   const [difficulty, setDifficulty] = useState<'easy' | 'medium'>('easy');
 
-  if (loading) return <p>Loading...</p>;
-  if (!article) return <p>Article not found.</p>;
+  if (loading) return <p className="text-gray-800 dark:text-gray-200">Loading...</p>;
+  if (!article) return <p className="text-gray-800 dark:text-gray-200">Article not found.</p>;
 
   const version = difficulty === 'easy' ? article.easyVersion : article.mediumVersion;
 
   return (
-    <div className="container mx-auto flex flex-col md:flex-row gap-8">
+    <div className="container mx-auto flex flex-col md:flex-row gap-8 dark:bg-gray-900 dark:text-gray-100">
       {/* Main article content */}
       <div className="flex-1">
         <div className="flex items-center justify-between">
@@ -34,13 +34,19 @@ export default function ArticlePage() {
         <ArticleDetail content={version.content} vocabulary={version.vocabulary} />
 
         {/* Link to original article (subtle) */}
-        <div className="text-right text-sm text-gray-400 mt-2">
-          <a href={article.sourceUrl} target="_blank" rel="noopener noreferrer">Article original</a>
+        <div className="text-right text-sm text-gray-400 dark:text-gray-500 mt-2">
+          <a
+            href={article.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline"
+          >
+            Article original
+          </a>
         </div>
 
         {/* Audio player */}
         <div className="mt-4">
-          {/* A custom audio player or simple HTML <audio> */}
           <AudioPlayer src={version.audioUrl}></AudioPlayer>
         </div>
 
@@ -51,15 +57,14 @@ export default function ArticlePage() {
         <br />
 
         {/* Grammar Section */}
-        <GrammarSection grammarPoints={version.grammarPoints}/>
+        <GrammarSection grammarPoints={version.grammarPoints} />
       </div>
 
       {/* Right side panel for vocabulary & grammar */}
-      <aside className="w-full md:w-1/3 bg-white rounded-md shadow p-4 h-fit self-start">
-        <h1 className="text-2xl font-semibold text-green-400">🧠 Vocabulaire (語彙)</h1>
+      <aside className="w-full md:w-1/3 bg-white dark:bg-gray-800 rounded-md shadow p-4 h-fit self-start">
+        <h1 className="text-2xl font-semibold text-green-400 dark:text-green-500">🧠 Vocabulaire (語彙)</h1>
         <VocabTable vocabulary={version.vocabulary} />
       </aside>
-
     </div>
   );
 }

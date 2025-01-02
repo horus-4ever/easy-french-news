@@ -23,19 +23,21 @@ export default function QuizQuestion({ question }: QuizQuestionProps) {
   };
 
   return (
-    <div className="p-4 border rounded-md">
-      <h3 className="font-medium text-gray-800">{question.questionText}</h3>
+    <div className="p-4 border rounded-md bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+      <h3 className="font-medium text-gray-800 dark:text-gray-100">
+        {question.questionText}
+      </h3>
       <div className="mt-3 space-y-2">
         {question.options.map((option, idx) => (
           <button
             key={idx}
             onClick={() => handleOptionSelect(option)}
-            className={`w-full p-2 border rounded-md ${
+            className={`w-full p-2 border dark:border-black rounded-md text-gray-800 dark:text-gray-100 ${
               selectedOption === option
                 ? isCorrect
-                  ? 'bg-green-200'
-                  : 'bg-red-200'
-                : ''
+                  ? 'bg-green-200 dark:bg-green-700'
+                  : 'bg-red-200 dark:bg-red-700'
+                : 'bg-white dark:bg-gray-700'
             }`}
           >
             {option}

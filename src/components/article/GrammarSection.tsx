@@ -23,13 +23,15 @@ export default function GrammarSection({ grammarPoints }: GrammarSectionProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <aside className="w-full bg-white rounded-md shadow p-4 self-start">
+    <aside className="w-full bg-white dark:bg-gray-800 rounded-md shadow p-4 self-start">
       <div
         className="flex justify-between items-center cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <h2 className="text-2xl font-semibold text-green-400">📚 Grammaire (文法)</h2>
-        <div className="text-green-800 transition-transform duration-300">
+        <h2 className="text-2xl font-semibold text-green-400 dark:text-green-500">
+          📚 Grammaire (文法)
+        </h2>
+        <div className="text-green-800 dark:text-green-400 transition-transform duration-300">
           {isOpen ? <FaChevronDown size={20} /> : <FaChevronRight size={20} />}
         </div>
       </div>
@@ -50,7 +52,9 @@ export default function GrammarSection({ grammarPoints }: GrammarSectionProps) {
               />
             ))
           ) : (
-            <p className="text-gray-500">No grammar points available.</p>
+            <p className="text-gray-500 dark:text-gray-400">
+              No grammar points available.
+            </p>
           )}
         </div>
       </div>

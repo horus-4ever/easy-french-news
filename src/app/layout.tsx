@@ -27,7 +27,7 @@ export default function RootLayout({
           {/* Provide global audio state */}
           <AudioStateProvider>
             <Navbar />
-            <main className="min-h-screen bg-gray-50 p-4">{children}</main>
+            <main className="min-h-screen bg-gray-50 p-4 dark:bg-gray-900">{children}</main>
 
             {/* Render the mini-player at the bottom so it’s always present */}
             <MiniPlayer />

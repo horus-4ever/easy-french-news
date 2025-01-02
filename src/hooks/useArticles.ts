@@ -11,11 +11,11 @@ type Article = {
 
 // Define props for filtering and pagination
 interface UseArticlesProps {
-  tags?: string[];
-  limit?: number;
+  tags: string[];
+  limit: number;
 }
 
-export function useArticles({ tags = [], limit = 3 }: UseArticlesProps) {
+export function useArticles({ tags, limit }: UseArticlesProps) {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -41,14 +41,13 @@ export function useArticles({ tags = [], limit = 3 }: UseArticlesProps) {
   };
 
   useEffect(() => {
+    setArticles([]);  // Clear articles when tags change
     setPage(1);
     doFetchArticles(1);
   }, [tags]);  // Refetch if tags change
 
   useEffect(() => {
-    if (page > 1) {
-      doFetchArticles(page);
-    }
+    doFetchArticles(page);
   }, [page]);  // Fetch next page when `page` changes
 
   return { articles, loading, hasMore, setPage };

@@ -16,3 +16,22 @@
         padding: revert;
     }
 }
+
+:root {
+    --text-color: #111827;
+    --header-bg: #ffffff;
+}
+  
+.dark {
+    --text-color: #e0e0e0;
+    --header-bg: #111827;
+}
+  
+/* Apply to body and common elements */
+body {
+    color: var(--text-color);
+}
+  
+header, nav {
+    background-color: var(--header-bg);
+}

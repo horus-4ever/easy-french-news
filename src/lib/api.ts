@@ -1,4 +1,4 @@
-export async function fetchArticles(tags: string[], page = 1, limit = 3) {
+export async function fetchArticles(tags: string[], page: number, limit: number) {
     const params = new URLSearchParams();
     tags.forEach((tag) => params.append('tags', tag));
     params.append('page', String(page));

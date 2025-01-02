@@ -13,7 +13,7 @@ export function useIsInViewport(ref: RefObject<HTMLElement | null>) {
       setIsInView(entry.isIntersecting);
     }, {
         root: null, // viewport
-        threshold: 0.1 // consider "in view" if at least 10% is visible
+        threshold: 1 // consider "in view" if everything is visible
     });
 
     observer.observe(ref.current);

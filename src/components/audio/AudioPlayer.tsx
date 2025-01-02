@@ -148,28 +148,26 @@ export default function AudioPlayer({ src }: Props) {
   };
 
   return (
-    <div ref={playerContainerRef} className="audio-player w-full flex flex-col items-center p-6 bg-white rounded-lg shadow-lg border border-gray-200">
-      <h3 className="font-semibold mb-3 text-lg flex items-center">
+    <div ref={playerContainerRef} className="audio-player w-full flex flex-col items-center p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+      <h3 className="font-semibold mb-3 text-lg flex items-center text-gray-800 dark:text-gray-100">
         🎧 Article Audio
       </h3>
-
+  
       <audio ref={audioRef} src={src} />
-
+  
       <div className="w-full">
         {/* Desktop: Inline Row */}
         <div className="hidden md:flex items-center w-full space-x-4">
-          {/* Play/Pause Button */}
           <button
             onClick={togglePlay}
             className="p-4 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition"
           >
             {isPlaying ? <FiPause size={20} /> : <FiPlay size={20} />}
           </button>
-
-          {/* Seekable Progress Bar */}
+  
           <div
             ref={progressBarDesktopRef}
-            className="flex-1 h-2 bg-gray-300 rounded w-full overflow-hidden cursor-pointer"
+            className="flex-1 h-2 bg-gray-300 dark:bg-gray-600 rounded w-full overflow-hidden cursor-pointer"
             onClick={(e) => handleSeek(e, progressBarDesktopRef)}
             onMouseDown={(e) => handleMouseDown(e, progressBarDesktopRef)}
           >
@@ -178,39 +176,35 @@ export default function AudioPlayer({ src }: Props) {
               style={{ width: `${(currentTime / duration) * 100}%` }}
             />
           </div>
-
-          {/* Time Stamps */}
-          <div className="w-20 text-gray-500 text-sm flex justify-between">
+  
+          <div className="w-20 text-gray-500 dark:text-gray-400 text-sm flex justify-between">
             <span>{formatTime(currentTime)}</span>
             <span>{formatTime(duration)}</span>
           </div>
-
-          {/* Skip Back 5s */}
+  
           <button
             onClick={() => skip(-5)}
-            className="p-2 bg-gray-100 rounded-full hover:bg-gray-200"
+            className="p-2 bg-gray-100 dark:bg-gray-700 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600"
           >
             <RiReplay5Fill size={24} />
           </button>
-
-          {/* Skip Forward 5s */}
+  
           <button
             onClick={() => skip(5)}
-            className="p-2 bg-gray-100 rounded-full hover:bg-gray-200"
+            className="p-2 bg-gray-100 dark:bg-gray-700 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600"
           >
             <RiForward5Fill size={24} />
           </button>
-
-          {/* Settings Button */}
+  
           <button
-            className="p-2 bg-gray-100 border rounded-full hover:bg-gray-200"
+            className="p-2 bg-gray-100 dark:bg-gray-700 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600"
             onClick={() => setShowSettings(true)}
           >
             <FiSettings size={24} />
           </button>
         </div>
-
-        {/* Mobile Layout - Play/Pause Row */}
+  
+        {/* Mobile Layout */}
         <div className="flex items-center w-full md:hidden space-x-4">
           <button
             onClick={togglePlay}
@@ -218,10 +212,10 @@ export default function AudioPlayer({ src }: Props) {
           >
             {isPlaying ? <FiPause size={20} /> : <FiPlay size={20} />}
           </button>
-
+  
           <div
             ref={progressBarMobileRef}
-            className="flex-1 h-2 bg-gray-300 rounded overflow-hidden cursor-pointer w-full"
+            className="flex-1 h-2 bg-gray-300 dark:bg-gray-600 rounded overflow-hidden cursor-pointer w-full"
             onClick={(e) => handleSeek(e, progressBarMobileRef)}
             onMouseDown={(e) => handleMouseDown(e, progressBarMobileRef)}
           >
@@ -231,49 +225,47 @@ export default function AudioPlayer({ src }: Props) {
             />
           </div>
         </div>
-
-        {/* Mobile Layout - Skip and Settings Row */}
+  
         <div className="flex justify-center space-x-6 mt-4 md:hidden">
           <button
             onClick={() => skip(-5)}
-            className="p-3 bg-gray-100 rounded-full hover:bg-gray-200"
+            className="p-3 bg-gray-100 dark:bg-gray-700 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600"
           >
             <RiReplay5Fill size={24} />
           </button>
-
+  
           <button
             onClick={() => skip(5)}
-            className="p-3 bg-gray-100 rounded-full hover:bg-gray-200"
+            className="p-3 bg-gray-100 dark:bg-gray-700 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600"
           >
             <RiForward5Fill size={24} />
           </button>
-
+  
           <button
-            className="p-3 bg-gray-100 border rounded-full hover:bg-gray-200"
+            className="p-3 bg-gray-100 dark:bg-gray-700 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600"
             onClick={() => setShowSettings(true)}
           >
             <FiSettings size={24} />
           </button>
         </div>
       </div>
-
-      {/* Settings Popup Modal */}
+  
       {showSettings && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-96 relative">
             <button
               onClick={() => setShowSettings(false)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-red-500"
+              className="absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-red-500"
             >
               <FiX size={24} />
             </button>
-            <h4 className="text-lg font-semibold mb-4">Playback Settings</h4>
+            <h4 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Playback Settings</h4>
             <div className="flex items-center justify-between mb-4">
-              <span>Speed:</span>
+              <span className="text-gray-800 dark:text-gray-200">Speed:</span>
               <select
                 value={speed}
                 onChange={(e) => handleSpeedChange(parseFloat(e.target.value))}
-                className="p-2 border rounded-md"
+                className="p-2 border rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100"
               >
                 <option value="0.7">0.7x</option>
                 <option value="0.85">0.85x</option>
@@ -282,9 +274,9 @@ export default function AudioPlayer({ src }: Props) {
                 <option value="1.3">1.3x</option>
               </select>
             </div>
-
+  
             <div className="flex items-center justify-between">
-              <span>Volume:</span>
+              <span className="text-gray-800 dark:text-gray-200">Volume:</span>
               <input
                 type="range"
                 min="0"
@@ -300,4 +292,4 @@ export default function AudioPlayer({ src }: Props) {
       )}
     </div>
   );
-}
+}  

@@ -6,6 +6,7 @@ export async function getArticles(tags: string[], limit: number, page: number) {
     if (tags.length > 0) {
         query = { labels: { $in: tags } };
     }
+    const json = await Article.find(query).sort({ publishDate: -1 }).select('title labels').exec();
     return Article.find(query)
         .sort({ publishDate: -1 })
         .skip(skip)

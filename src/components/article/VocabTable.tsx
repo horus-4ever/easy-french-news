@@ -26,30 +26,32 @@ export default function VocabTable({ vocabulary }: VocabTableProps) {
   return (
     <>
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-200">
-          <thead className="bg-gray-100">
+        <table className="min-w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+          <thead className="bg-gray-100 dark:bg-gray-700">
             <tr>
-              <th className="py-2 px-4 border">Word</th>
-              <th className="py-2 px-4 border">Translation</th>
+              <th className="py-2 px-4 border dark:border-gray-600 text-gray-900 dark:text-gray-100">Word</th>
+              <th className="py-2 px-4 border dark:border-gray-600 text-gray-900 dark:text-gray-100">Translation</th>
             </tr>
           </thead>
           <tbody>
             {vocabulary.map((vocab, index) => (
-              <tr key={index} className="hover:bg-gray-50">
-                <td className="py-2 px-4 border">
+              <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-600">
+                <td className="py-2 px-4 border dark:border-gray-700 text-gray-800 dark:text-gray-200">
                   {isVerb(vocab.category) ? (
                     <span
                       onClick={() => handleVerbClick(vocab.word)}
-                      className="font-bold underline text-blue-600 cursor-pointer"
+                      className="font-bold underline text-blue-600 dark:text-blue-400 cursor-pointer"
                     >
                       {vocab.word}
                     </span>
                   ) : (
                     <span className="font-bold">{vocab.word}</span>
                   )}
-                  , <span className="text-sm italic">{vocab.category}</span>
+                  , <span className="text-sm italic text-gray-600 dark:text-gray-400">{vocab.category}</span>
                 </td>
-                <td className="py-2 px-4 border">{vocab.translation}</td>
+                <td className="py-2 px-4 border dark:border-gray-700 text-gray-800 dark:text-gray-200">
+                  {vocab.translation}
+                </td>
               </tr>
             ))}
           </tbody>

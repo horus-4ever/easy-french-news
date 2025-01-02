@@ -72,13 +72,13 @@ export default function VocabWord({
             vocab-tooltip
             pointer-events-none 
             absolute bottom-full mb-2 w-max p-2 
-            rounded border border-gray-200 
-            bg-white text-lg text-gray-800 shadow 
-            transition-opacity 
+            rounded border border-gray-200 dark:border-gray-600
+            bg-white dark:bg-gray-800 
+            text-lg text-gray-800 dark:text-gray-100 
+            shadow 
             ${position === 'left' ? 'right-0' : ''}
             ${position === 'right' ? 'left-0' : ''}
             ${position === 'center' ? '-translate-x-1/2 left-1/2' : ''}
-            opacity-100
           `}
         >
           <strong>{word}</strong>
