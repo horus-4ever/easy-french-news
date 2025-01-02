@@ -22,9 +22,10 @@ export default function ConjugationPopup({ verb, onClose }: ConjugationPopupProp
         let foundVerb = null;
 
         for (const word of words) {
-          const exists = await checkIfVerbExists(word);
+          const searchWord = word.replace("s'", "");
+          const exists = await checkIfVerbExists(searchWord);
           if (exists) {
-            foundVerb = word;
+            foundVerb = searchWord;
             break;
           }
         }
