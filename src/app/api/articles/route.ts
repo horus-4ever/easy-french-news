@@ -1,6 +1,5 @@
 import { NextResponse , NextRequest} from 'next/server';
 import dbConnect from '@/lib/dbConnect';
-import Article from '@/models/Article';
 import { getArticles } from '@/lib/services/articleService';
 import { handleApiError } from '@/lib/errorHandler';
 
@@ -15,7 +14,7 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '3', 10);
     const page = parseInt(searchParams.get('page') || '1', 10);
     // get the articles
-    const articles = await getArticles(tags, limit, page);
+    const articles = await getArticles(tags, limit, page, true);
     return NextResponse.json({ success: true, data: articles });
   } catch (error: any) {
     return handleApiError(error);

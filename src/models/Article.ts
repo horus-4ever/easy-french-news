@@ -37,6 +37,7 @@ export interface IArticle extends Document {
   sourceUrl: string;
   imageUrl: string;
   publishDate: Date;
+  published: boolean;
   createdAt: Date;
   updatedAt: Date;
   labels: string[];
@@ -87,6 +88,7 @@ const ArticleSchema = new Schema<IArticle>(
     sourceUrl: { type: String, required: false },
     imageUrl: { type: String, required: false },
     publishDate: { type: Date, required: false },
+    published: { type: Boolean, required: true, default: false },
     labels: [{ type: String, required: false }],
     easyVersion: { type: ArticleVersionSchema, required: true },
     mediumVersion: { type: ArticleVersionSchema, required: true }
