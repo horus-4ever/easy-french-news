@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import ArticleCard from '@/components/article/ArticleCard';
 import { FiFilter } from 'react-icons/fi';
 import { useArticles } from '@/hooks/useArticles';
+import { useAudioState } from '@/context/AudioStateContext';
 
 // Article Type
 type Article = {
@@ -17,13 +18,18 @@ type Article = {
 export default function HomePage() {
   const [labels, setLabels] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-
+  const { setMiniPlayerClosed } = useAudioState();
   const [showFilter, setShowFilter] = useState(false);
 
   const { articles, loading, hasMore, setPage } = useArticles({
     tags: selectedTags,
     limit: 4,
   });
+
+  useEffect(() => {
+    // close the mini-player
+    setMiniPlayerClosed(true);
+  }, []);
 
   useEffect(() => {
     const fetchLabels = async () => {

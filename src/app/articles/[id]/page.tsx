@@ -10,11 +10,28 @@ import AudioPlayer from '@/components/audio/AudioPlayer';
 import QuizSection from '@/components/article/QuizSection';
 import DifficultyToggle from '@/components/article/DifficultyToggle';
 import { useArticle } from '@/hooks/useArticle';
+import { useAudioState } from '@/context/AudioStateContext';
 
 export default function ArticlePage() {
   const { id } = useParams() as { id: string };
   const { article, loading } = useArticle(id);
   const [difficulty, setDifficulty] = useState<'easy' | 'medium'>('easy');
+  const { audioRef, setIsPlaying, setCurrentTime, setMiniPlayerClosed } = useAudioState();
+
+  useEffect(() => {
+    // Reset audio player when difficulty changes
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.load();
+      setIsPlaying(false);
+      setCurrentTime(0);
+    }
+  }, [difficulty, article, audioRef]);
+
+  useEffect(() => {
+    // close the miniplayer when the difficulty changes
+    setMiniPlayerClosed(true);
+  }, [difficulty]);
 
   if (loading) return <p className="text-gray-800 dark:text-gray-200">Loading...</p>;
   if (!article) return <p className="text-gray-800 dark:text-gray-200">Article not found.</p>;
