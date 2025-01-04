@@ -1,6 +1,6 @@
 import { NextResponse , NextRequest} from 'next/server';
 import dbConnect from '@/lib/dbConnect';
-import { getUnpublishedArticles } from '@/lib/services/articleService';
+import { getUnpublishedArticles } from '@/features/articles/services/articleService';
 import { handleApiError } from '@/lib/errorHandler';
 
 export async function GET(request: NextRequest) {

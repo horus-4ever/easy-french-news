@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { loadConjugations } from '@/lib/conjugationCache';
+import { getConjugations } from '@/features/conjugation/services/conjugationService';
 
 type tParams = Promise<{ verb: string }>;
 
@@ -11,7 +11,7 @@ export async function GET(
   const { verb } = await params;
 
   try {
-    const conjugations = await loadConjugations();
+    const conjugations = await getConjugations();
 
     // Check if the verb exists
     const exists = Object.prototype.hasOwnProperty.call(conjugations, verb);

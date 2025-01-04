@@ -1,4 +1,4 @@
-import Article from '@/models/Article';
+import Article from '@/features/articles/models/Article';
 
 export async function getArticles(tags: string[], limit: number, page: number, published: boolean) {
     const skip = (page - 1) * limit;

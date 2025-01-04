@@ -2,7 +2,7 @@
 "use client";
 
 import parse, { DOMNode, domToReact, Element } from 'html-react-parser';
-import VocabWord from '@/components/article/VocabWord';
+import VocabWord from '@/features/articles/components/VocabWord';
 
 interface IVocabulary {
   word: string;

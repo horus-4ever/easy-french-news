@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import ConjugationPopup from '@/components/conjugation/ConjugationPopup';
+import ConjugationPopup from '@/features/articles/components/ConjugationPopup';
 
 interface IVocabulary {
   word: string;

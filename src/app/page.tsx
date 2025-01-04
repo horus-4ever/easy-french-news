@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import ArticleCard from '@/components/article/ArticleCard';
+import ArticleCard from '@/features/articles/components/ArticleCard';
 import { FiFilter } from 'react-icons/fi';
-import { useArticles } from '@/hooks/useArticles';
+import { useArticles } from '@/features/articles/hooks/useArticles';
 import { useAudioState } from '@/context/AudioStateContext';
+import { fetchLabels } from '@/lib/api';
 
 // Article Type
 type Article = {
@@ -32,18 +33,9 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    const fetchLabels = async () => {
-      try {
-        const res = await fetch('/api/labels');
-        const json = await res.json();
-        if (json.success) {
-          setLabels(json.data);
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchLabels();
+    fetchLabels().then(
+      (response) => setLabels(response.data),
+    );
   }, []);
 
   useEffect(() => {

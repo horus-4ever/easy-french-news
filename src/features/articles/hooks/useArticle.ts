@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { IArticle } from '@/models/Article';
-import { fetchArticleById } from '@/lib/api';
+import { IArticle } from '@/features/articles/types/article';
+import { fetchArticleById } from '@/features/articles/api/api';
 
 export function useArticle(articleId: string) {
   const [article, setArticle] = useState<IArticle | null>(null);

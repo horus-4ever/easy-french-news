@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import ConjugationTable from '@/components/conjugation/ConjugationTable';
-import Participles from '@/components/conjugation/Participles';
-import { checkIfVerbExists } from '@/lib/api';
+import ConjugationTable from '@/features/conjugation/components/ConjugationTable';
+import Participles from '@/features/conjugation/components/Participles';
+import { checkIfVerbExists } from '@/features/conjugation/api/api';
 
 interface ConjugationPopupProps {
   verb: string;

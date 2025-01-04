@@ -1,6 +1,6 @@
 import { NextResponse , NextRequest} from 'next/server';
 import dbConnect from '@/lib/dbConnect';
-import { getArticles } from '@/lib/services/articleService';
+import { getArticles } from '@/features/articles/services/articleService';
 import { handleApiError } from '@/lib/errorHandler';
 
 /**

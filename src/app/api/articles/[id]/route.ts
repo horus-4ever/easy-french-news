@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
-import Article from '@/models/Article';
-import { getArticleById } from '@/lib/services/articleService';
+import Article from '@/features/articles/models/Article';
+import { getArticleById } from '@/features/articles/services/articleService';
 import { handleApiError } from '@/lib/errorHandler';
 
 type tParams = Promise<{ id: string }>;

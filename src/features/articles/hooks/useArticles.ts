@@ -1,4 +1,4 @@
-import { fetchArticles } from '@/lib/api';
+import { fetchArticles } from '@/features/articles/api/api';
 import { useState, useEffect } from 'react';
 
 type Article = {

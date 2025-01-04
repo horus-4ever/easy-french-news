@@ -3,7 +3,7 @@ import fs from 'fs/promises';
 
 let conjugationCache: Record<string, any> | null = null;
 
-export async function loadConjugations() {
+export async function getConjugations() {
   if (conjugationCache) {
     return conjugationCache;
   }

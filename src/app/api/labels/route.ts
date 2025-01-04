@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import Label from '@/models/Label';
-import Article from '@/models/Article';
+import Article from '@/features/articles/models/Article';
 
 export async function GET() {
   try {

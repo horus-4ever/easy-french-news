@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { loadConjugations } from '@/lib/conjugationCache';
+import { getConjugations } from '@/features/conjugation/services/conjugationService';
 
 type tParams = Promise<{ verb: string }>;
 
@@ -11,7 +11,7 @@ export async function GET(
 
   try {
     // Load conjugations from cache
-    const conjugations = await loadConjugations();
+    const conjugations = await getConjugations();
     if(conjugations === null) {
         return NextResponse.json(
             {

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { FaChevronDown, FaChevronRight } from 'react-icons/fa';
-import GrammarPoint from '@/components/article/GrammarPoint';
+import GrammarPoint from '@/features/articles/components/GrammarPoint';
 
 interface Example {
   french: string;

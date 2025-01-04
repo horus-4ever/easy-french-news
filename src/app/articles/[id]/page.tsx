@@ -2,14 +2,13 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import ArticleDetail from '@/components/article/ArticleDetail';
-import { IArticle } from '@/models/Article';
-import VocabTable from '@/components/article/VocabTable';
-import GrammarSection from '@/components/article/GrammarSection';
+import ArticleDetail from '@/features/articles/components/ArticleDetail';
+import VocabTable from '@/features/articles/components/VocabTable';
+import GrammarSection from '@/features/articles/components/GrammarSection';
 import AudioPlayer from '@/components/audio/AudioPlayer';
-import QuizSection from '@/components/article/QuizSection';
-import DifficultyToggle from '@/components/article/DifficultyToggle';
-import { useArticle } from '@/hooks/useArticle';
+import QuizSection from '@/features/articles/components/QuizSection';
+import DifficultyToggle from '@/features/articles/components/DifficultyToggle';
+import { useArticle } from '@/features/articles/hooks/useArticle';
 import { useAudioState } from '@/context/AudioStateContext';
 
 export default function ArticlePage() {
