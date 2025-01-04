@@ -1,7 +1,8 @@
-// components/ArticleDetail.tsx
 "use client";
+
 import React from 'react';
 import { parseVocabHtml } from '@/lib/parseVocabHtml';
+import { sanitizeHtml } from '@/lib/sanitizeHtml';
 
 interface IVocabulary {
   word: string;
@@ -15,10 +16,11 @@ interface ArticleDetailProps {
 }
 
 export default function ArticleDetail({ content, vocabulary }: ArticleDetailProps) {
+  const sanitizedContent = sanitizeHtml(content);
+  const parsedContent = parseVocabHtml(sanitizedContent, vocabulary);
   return (
     <div className="prose max-w-none text-xl text-justify">
-      {/* This function converts <vocab> text into <VocabWord> components */}
-      {parseVocabHtml(content, vocabulary)}
+      {parsedContent}
     </div>
   );
 }
