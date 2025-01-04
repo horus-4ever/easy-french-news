@@ -9,7 +9,8 @@ module.exports = {
     './src/context/**/*.{js,ts,jsx,tsx}',
     './src/scripts/**/*.{js,ts,jsx,tsx}',
     // shadcn/ui
-    './components/ui/**/*.{js,ts,jsx,tsx}'
+    './components/ui/**/*.{js,ts,jsx,tsx}',
+    './src/features/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {

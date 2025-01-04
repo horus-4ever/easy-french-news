@@ -88,7 +88,7 @@ export default function Navbar() {
                   }`}
                 />
                 <FiSun
-                  className={`absolute left-2 text-yellow-200 ${
+                  className={`absolute left-2 text-black ${
                     darkMode ? 'opacity-0' : 'opacity-100'
                   } transition-opacity`}
                 />
@@ -148,7 +148,7 @@ export default function Navbar() {
                 }`}
               />
               <FiSun
-                className={`absolute left-2 text-yellow-500 ${
+                className={`absolute left-2 text-black ${
                   darkMode ? 'opacity-0' : 'opacity-100'
                 } transition-opacity`}
               />

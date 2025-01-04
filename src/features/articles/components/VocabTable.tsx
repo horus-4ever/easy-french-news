@@ -29,8 +29,8 @@ export default function VocabTable({ vocabulary }: VocabTableProps) {
         <table className="min-w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
           <thead className="bg-gray-100 dark:bg-gray-700">
             <tr>
-              <th className="py-2 px-4 border dark:border-gray-600 text-gray-900 dark:text-gray-100">Word</th>
-              <th className="py-2 px-4 border dark:border-gray-600 text-gray-900 dark:text-gray-100">Translation</th>
+              <th className="py-2 px-4 border dark:border-gray-600 text-gray-900 dark:text-gray-100">Mot</th>
+              <th className="py-2 px-4 border dark:border-gray-600 text-gray-900 dark:text-gray-100">Traduction</th>
             </tr>
           </thead>
           <tbody>
