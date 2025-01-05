@@ -25,7 +25,7 @@ export default function ArticlePage() {
       setIsPlaying(false);
       setCurrentTime(0);
     }
-  }, [difficulty, article, audioRef]);
+  }, [difficulty, article]);
 
   useEffect(() => {
     // close the miniplayer when the difficulty changes

@@ -1,7 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
-import dbConnect from '@/lib/dbConnect';
-import Label from '@/models/Label';
-import Article from '@/features/articles/models/Article';
+import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
