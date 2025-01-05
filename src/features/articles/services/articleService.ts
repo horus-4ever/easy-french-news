@@ -1,4 +1,5 @@
 import Article from '@/features/articles/models/Article';
+import mongoose from 'mongoose';
 
 export async function getArticles(tags: string[], limit: number, page: number, published: boolean) {
     const skip = (page - 1) * limit;
@@ -9,7 +10,7 @@ export async function getArticles(tags: string[], limit: number, page: number, p
     return Article.find(query)
         .sort({ publishDate: -1 })
         .skip(skip)
-        .limit(limit)
+        .limit(Math.min(limit, 50)) // limit to maximum 50 to avoid massive data transfer
         .select('title imageUrl labels publishDate')
         .exec();
 }
@@ -21,5 +22,8 @@ export async function getUnpublishedArticles() {
 }
 
 export async function getArticleById(id: string) {
+    if (!mongoose.Types.ObjectId.isValid(id)) { // ensure the ID is valid
+        throw new Error('Invalid article ID');
+    }    
     return Article.findById(id).exec();
 }

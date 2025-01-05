@@ -4,6 +4,7 @@ import { getUnpublishedArticles } from '@/features/articles/services/articleServ
 import { handleApiError } from '@/lib/errorHandler';
 
 export async function GET(request: NextRequest) {
+  // everyone can see unpublished articles, this is a wanted behavior
   try {
     await dbConnect();    
     // get the unpublished articles

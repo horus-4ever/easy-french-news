@@ -10,6 +10,7 @@ type UnpublishedArticle = {
 };
 
 export default function UnpublishedPage() {
+  // this page is visible on purpose
   const [articles, setArticles] = useState<UnpublishedArticle[]>([]);
 
   useEffect(() => {
