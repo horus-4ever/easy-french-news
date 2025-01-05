@@ -27,6 +27,8 @@ export default function ArticleCard({
               src={imageUrl}
               alt={title}
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              priority
               style={{ objectFit: 'cover' }}
               className="rounded-md"
             />

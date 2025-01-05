@@ -29,7 +29,7 @@ export default function HomePage() {
     fetchLabels().then((response) => setLabels(response.data));
   }, []);
 
-  // Debounced scroll handler without useRef
+  // Debounced scroll handler
   useEffect(() => {
     const handleScroll = debounce(() => {
       if (
