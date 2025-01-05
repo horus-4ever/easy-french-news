@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getConjugations } from '@/features/conjugation/services/conjugationService';
+import { NotFoundError } from '@/lib/errors/errorTypes';
+import { handleApiError } from '@/lib/errors/errorHandler';
 
 type tParams = Promise<{ verb: string }>;
 
@@ -15,17 +17,11 @@ export async function GET(
 
     // Check if the verb exists
     const exists = Object.prototype.hasOwnProperty.call(conjugations, verb);
-
-    if (exists) {
-      return NextResponse.json({ exists: true });
-    } else {
-      return NextResponse.json({ exists: false }, { status: 404 });
+    if(!exists) {
+      throw new NotFoundError ('Verb not found');
     }
+    return NextResponse.json({ exists: true });
   } catch (error) {
-    console.error('Error checking verb:', error);
-    return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 }
-    );
+    handleApiError(error);
   }
 }

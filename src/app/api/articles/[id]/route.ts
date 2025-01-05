@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
-import Article from '@/features/articles/models/Article';
 import { getArticleById } from '@/features/articles/services/articleService';
-import { handleApiError } from '@/lib/errorHandler';
+import { handleApiError } from '@/lib/errors/errorHandler';
+import { NotFoundError } from '@/lib/errors/errorTypes';
 
 type tParams = Promise<{ id: string }>;
 
@@ -16,9 +16,6 @@ export async function GET(
     const id = (await params).id;
 
     const article = await getArticleById(id);
-    if (!article) {
-      return NextResponse.json({ success: false, error: 'Article not found' }, { status: 404 });
-    }
     return NextResponse.json({ success: true, data: article });
   } catch (error: any) {
     return handleApiError(error);

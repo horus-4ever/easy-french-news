@@ -1,4 +1,5 @@
 import Article from '@/features/articles/models/Article';
+import { BadRequestError } from '@/lib/errors/errorTypes';
 import mongoose from 'mongoose';
 
 export async function getArticles(tags: string[], limit: number, page: number, published: boolean) {
@@ -23,7 +24,11 @@ export async function getUnpublishedArticles() {
 
 export async function getArticleById(id: string) {
     if (!mongoose.Types.ObjectId.isValid(id)) { // ensure the ID is valid
-        throw new Error('Invalid article ID');
-    }    
-    return Article.findById(id).exec();
+        throw new BadRequestError('Invalid article ID');
+    }
+    const article = await Article.findById(id).exec();
+    if(!article) {
+        throw new BadRequestError('Article not found');
+    }
+    return article;
 }

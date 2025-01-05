@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getConjugations } from '@/features/conjugation/services/conjugationService';
+import { BadRequestError, NotFoundError } from '@/lib/errors/errorTypes';
+import { handleApiError } from '@/lib/errors/errorHandler';
 
 export async function POST(req: NextRequest) {
   try {
@@ -7,24 +9,11 @@ export async function POST(req: NextRequest) {
     const { verb } = body;
 
     if (!verb) {
-      return NextResponse.json(
-        {
-          error: 'Invalid request: verb is required',
-        },
-        { status: 400 }
-      );
+      throw new BadRequestError('Invalid request: verb is required');
     }
 
     // Load conjugations from cache
     const conjugations = await getConjugations();
-    if (conjugations === null) {
-      return NextResponse.json(
-        {
-          error: 'Internal Server Error',
-        },
-        { status: 500 }
-      );
-    }
 
     // Input may be a sentence, extract the right verb
     const words = verb.split(' ').filter(Boolean);
@@ -45,35 +34,15 @@ export async function POST(req: NextRequest) {
     }
 
     if (!foundVerb) {
-      return NextResponse.json(
-        {
-          error: 'Verb not found',
-        },
-        { status: 404 }
-      );
+      throw new NotFoundError('Verb not found');
     }
 
     const conjugation = conjugations[foundVerb];
-    if (conjugation) {
-      return NextResponse.json({
-        foundVerb: foundVerb,
-        conjugation: conjugation,
-      });
-    } else {
-      return NextResponse.json(
-        {
-          error: 'Verb not found',
-        },
-        { status: 404 }
-      );
+    if (!conjugation) {
+      throw new NotFoundError('Verb not found');
     }
+    return NextResponse.json({ foundVerb, conjugation });
   } catch (error) {
-    console.error('Error fetching conjugation:', error);
-    return NextResponse.json(
-      {
-        error: 'Internal Server Error',
-      },
-      { status: 500 }
-    );
+    handleApiError(error);
   }
 }
