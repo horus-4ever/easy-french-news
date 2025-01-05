@@ -1,3 +1,4 @@
+import { useErrorContext } from '@/context/ErrorContext';
 import { fetchArticles } from '@/features/articles/api/api';
 import { useState, useEffect } from 'react';
 
@@ -21,6 +22,8 @@ export function useArticles({ tags, limit }: UseArticlesProps) {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
+  const { setError } = useErrorContext();
+
   const doFetchArticles = async (pageNumber: number) => {
     setLoading(true);
     try {
@@ -32,9 +35,12 @@ export function useArticles({ tags, limit }: UseArticlesProps) {
         } else {
           setArticles((prev) => [...prev, ...json.data]);  // append new articles
         }
+      } else {
+        setError("Impossible de récupérer les articles. Réessayez plus tard.");
       }
     } catch (error) {
       console.error('Failed to fetch articles:', error);
+      setError("Erreur réseau ou serveur. Impossible de récupérer les articles.");
     } finally {
       setLoading(false);
     }

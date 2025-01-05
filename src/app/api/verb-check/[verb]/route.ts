@@ -22,6 +22,6 @@ export async function GET(
     }
     return NextResponse.json({ exists: true });
   } catch (error) {
-    handleApiError(error);
+    return handleApiError(error);
   }
 }

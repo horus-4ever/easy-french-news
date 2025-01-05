@@ -41,8 +41,8 @@ export async function POST(req: NextRequest) {
     if (!conjugation) {
       throw new NotFoundError('Verb not found');
     }
-    return NextResponse.json({ foundVerb, conjugation });
+    return NextResponse.json({ success: true, foundVerb, conjugation });
   } catch (error) {
-    handleApiError(error);
+    return handleApiError(error);
   }
 }

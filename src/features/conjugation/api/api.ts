@@ -11,18 +11,13 @@ export async function checkIfVerbExists(verb: string): Promise<boolean> {
 }
 
 export async function fetchConjugation(verb: string): Promise<any> {
-    try {
-        const response = await fetch(`/api/conjugate`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ verb }),
-        });
-        const data = await response.json();
-        return data.conjugation;
-    } catch (error) {
-        console.error('Error fetching conjugation:', error);
-        return {};
-    }
+    const response = await fetch(`/api/conjugate`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ verb }),
+    });
+    const data = await response.json();
+    return data;
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { fetchConjugation } from '@/features/conjugation/api/api';
 import ConjugationTable from '@/features/conjugation/components/ConjugationTable';
 import Participles from '@/features/conjugation/components/Participles';
+import { useErrorContext } from '@/context/ErrorContext';
 
 interface ConjugationPopupProps {
   verb: string;
@@ -15,10 +16,17 @@ interface ConjugationData {
 export default function ConjugationPopup({ verb, onClose }: ConjugationPopupProps) {
   const [conjugations, setConjugations] = useState<ConjugationData | null>(null);
 
+  const { setError } = useErrorContext();
+
   useEffect(() => {
     fetchConjugation(verb).then((data) => {
-      setConjugations(data);
-  });
+      if(!data.success) {
+        setError(`Impossible de récupérer la conjugaison de "${verb}".`);
+        onClose(); // exit popup
+        return;
+      }
+      setConjugations(data.conjugation);
+    });
   }, [verb]);
 
   useEffect(() => {

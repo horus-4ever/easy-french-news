@@ -2,6 +2,7 @@ import { NextResponse , NextRequest} from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import { getArticles } from '@/features/articles/services/articleService';
 import { handleApiError } from '@/lib/errors/errorHandler';
+import { BadRequestError } from '@/lib/errors/errorTypes';
 
 /**
  * GET articles chunk by chunk
