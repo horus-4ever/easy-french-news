@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
+import { fetchConjugation } from '@/features/conjugation/api/api';
 import ConjugationTable from '@/features/conjugation/components/ConjugationTable';
 import Participles from '@/features/conjugation/components/Participles';
-import { checkIfVerbExists } from '@/features/conjugation/api/api';
 
 interface ConjugationPopupProps {
   verb: string;
@@ -16,29 +16,9 @@ export default function ConjugationPopup({ verb, onClose }: ConjugationPopupProp
   const [conjugations, setConjugations] = useState<ConjugationData | null>(null);
 
   useEffect(() => {
-    const fetchConjugation = async () => {
-      try {
-        const words = verb.split(' ').filter(Boolean);
-        let foundVerb = null;
-
-        for (const word of words) {
-          const searchWord = word.replace("s'", "");
-          const exists = await checkIfVerbExists(searchWord);
-          if (exists) {
-            foundVerb = searchWord;
-            break;
-          }
-        }
-        const verbToFetch = foundVerb || words[0];
-        const response = await fetch(`/api/conjugate/${verbToFetch}`);
-        const data = await response.json();
-        setConjugations(data.conjugation);
-      } catch (error) {
-        console.error('Error fetching conjugation:', error);
-      }
-    };
-
-    fetchConjugation();
+    fetchConjugation(verb).then((data) => {
+      setConjugations(data);
+  });
   }, [verb]);
 
   useEffect(() => {
