@@ -21,3 +21,15 @@ export async function fetchConjugation(verb: string): Promise<any> {
     const data = await response.json();
     return data;
 }
+
+export async function fetchDictionaryForm(conjugatedVerb: string): Promise<any> {
+    const response = await fetch(`/api/conjugate/reversed`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ verb: conjugatedVerb }),
+    });
+    const data = await response.json();
+    return data;
+}
