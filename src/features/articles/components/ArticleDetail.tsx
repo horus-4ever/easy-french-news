@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
-import { parseVocabHtml } from '@/lib/parseVocabHtml';
+import { parseContentHtml } from '@/lib/parseContent';
 import { sanitizeHtml } from '@/lib/sanitizeHtml';
 import { findInTrie, getTrieRoot, VerbMatch } from '@/features/conjugation/services/reversedConjugationService';
 import { fetchDictionaryForm } from '@/features/conjugation/api/api';
@@ -21,7 +21,7 @@ interface ArticleDetailProps {
 
 export default function ArticleDetail({ content, vocabulary }: ArticleDetailProps) {
   const sanitizedContent = sanitizeHtml(content);
-  const parsedContent = parseVocabHtml(sanitizedContent, vocabulary);
+  const parsedContent = parseContentHtml(sanitizedContent, vocabulary);
 
   const contentRef = useRef<HTMLDivElement>(null);
 

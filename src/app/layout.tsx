@@ -1,6 +1,7 @@
 // src/app/layout.tsx
 
 import './globals.css';
+import 'leaflet/dist/leaflet.css';
 import React from 'react';
 import { Metadata } from 'next';
 import Navbar from '@/components/navbar/Navbar';
