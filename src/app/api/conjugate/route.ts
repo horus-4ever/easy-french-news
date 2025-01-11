@@ -41,7 +41,9 @@ export async function POST(req: NextRequest) {
     if (!conjugation) {
       throw new NotFoundError('Verb not found');
     }
-    return NextResponse.json({ success: true, foundVerb, conjugation });
+    const response = NextResponse.json({ success: true, foundVerb, conjugation });
+    response.headers.set('Cache-Control', 'public, max-age=14400'); // cache for 4 hours
+    return response;
   } catch (error) {
     return handleApiError(error);
   }

@@ -19,7 +19,9 @@ export async function POST(req: NextRequest) {
     if (!matched) {
       throw new NotFoundError('Verb not found');
     }
-    return NextResponse.json({ success: true, matched });
+    const response = NextResponse.json({ success: true, matched });
+    response.headers.set('Cache-Control', 'public, max-age=14400');
+    return response;
   } catch (error) {
     return handleApiError(error);
   }

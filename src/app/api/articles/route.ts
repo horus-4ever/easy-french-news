@@ -20,7 +20,9 @@ export async function GET(request: NextRequest) {
     }
     // get the articles
     const articles = await getArticles(tags, limit, page, true);
-    return NextResponse.json({ success: true, data: articles });
+    const response = NextResponse.json({ success: true, data: articles });
+    response.headers.set('Cache-Control', 'public, max-age=1800'); // cache for 1/2 hours
+    return response;
   } catch (error: any) {
     return handleApiError(error);
   }
