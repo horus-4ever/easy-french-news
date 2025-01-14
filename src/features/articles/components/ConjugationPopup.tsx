@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { fetchConjugation } from '@/features/conjugation/api/api';
 import ConjugationTable from '@/features/conjugation/components/ConjugationTable';
 import Participles from '@/features/conjugation/components/Participles';
 import { useErrorContext } from '@/context/ErrorContext';
 
 interface ConjugationPopupProps {
+  conjugations: any;
   verb: string;
   onClose: () => void;
 }
@@ -13,22 +14,7 @@ interface ConjugationData {
   [key: string]: string[];
 }
 
-export default function ConjugationPopup({ verb, onClose }: ConjugationPopupProps) {
-  const [conjugations, setConjugations] = useState<ConjugationData | null>(null);
-
-  const { setError } = useErrorContext();
-
-  useEffect(() => {
-    fetchConjugation(verb).then((data) => {
-      if(!data.success) {
-        setError(`Impossible de récupérer la conjugaison de "${verb}".`);
-        onClose(); // exit popup
-        return;
-      }
-      setConjugations(data.conjugation);
-    });
-  }, [verb]);
-
+export default function ConjugationPopup({ conjugations, verb, onClose }: ConjugationPopupProps) {
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {

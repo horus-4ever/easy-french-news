@@ -13,7 +13,7 @@ export default async function Page() {
   await dbConnect();
 
   // 2) Fetch the first 4 published articles
-  const firstPageArticles = await getArticles([], 4, 1, true);
+  const firstPageArticles = await getArticles([], 6, 1, true);
 
   // 3) Convert to plain objects so Next.js can serialize them
   const serialized = JSON.parse(JSON.stringify(firstPageArticles));

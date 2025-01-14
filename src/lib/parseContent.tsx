@@ -1,5 +1,3 @@
-"use client";
-
 import parse, { DOMNode, domToReact, Element } from 'html-react-parser';
 import VocabWord from '@/features/articles/components/VocabWord';
 import PlaceWord from '@/features/places/components/PlaceWord';

@@ -1,5 +1,3 @@
-"use client";
-
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -50,7 +48,7 @@ export default function ArticleCard({
         )}
         {publishDate && (
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            Published on {new Date(publishDate).toLocaleDateString()}
+            Published on {new Date(publishDate).toUTCString()}
           </p>
         )}
       </Link>

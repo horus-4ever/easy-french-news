@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import ConjugationPopup from '@/features/articles/components/ConjugationPopup';
+import { fetchConjugation } from '@/features/conjugation/api/api';
+import { useErrorContext } from '@/context/ErrorContext';
 
 interface IVocabulary {
   word: string;
@@ -14,14 +16,25 @@ interface VocabTableProps {
 }
 
 export default function VocabTable({ vocabulary }: VocabTableProps) {
+  const [popupOpen, setPopupOpen] = useState<boolean>(false);
   const [selectedVerb, setSelectedVerb] = useState<string | null>(null);
+  const [conjugation, setConjugation] = useState<string | null>(null);
+  const { setError } = useErrorContext();
 
   const isVerb = (category: string) =>
     ['verb1', 'verb2', 'verb3'].includes(category.toLowerCase());
 
   const handleVerbClick = (verb: string) => {
-    setSelectedVerb(verb);
-  };
+    fetchConjugation(verb).then((data) => {
+      if(!data.success) {
+        setError(`Impossible de récupérer la conjugaison de "${verb}".`);
+        return;
+      }
+      setSelectedVerb(verb);
+      setConjugation(data.conjugation);
+      setPopupOpen(true);
+    }
+  )};
 
   return (
     <>
@@ -59,11 +72,12 @@ export default function VocabTable({ vocabulary }: VocabTableProps) {
       </div>
 
       {/* Conjugation Popup Rendered at Root Level */}
-      {selectedVerb && (
+      {popupOpen && selectedVerb && (
         <div>
           <ConjugationPopup
             verb={selectedVerb}
-            onClose={() => setSelectedVerb(null)}
+            conjugations={conjugation}
+            onClose={() => setPopupOpen(false)}
           />
         </div>
       )}

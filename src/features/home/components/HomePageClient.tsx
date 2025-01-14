@@ -45,7 +45,7 @@ export default function HomePageClient({
   } = useArticles({
     tags: selectedTags,
     tagsChanged: tagsChanged,
-    limit: 4,
+    limit: 6,
     initialData: initialArticles,
   });
 
