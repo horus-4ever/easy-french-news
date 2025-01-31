@@ -60,16 +60,7 @@ export default function Navbar() {
             </div>
 
             {/* 4) Language Selector */}
-            <select
-              value={language}
-              onChange={handleLanguageChange}
-              className="ml-4 p-2 text-black rounded-md dark:text-white dark:bg-gray-700"
-              aria-label="Select Translation Language"
-            >
-              <option value="japanese">Japanese</option>
-              <option value="english">English</option>
-              {/* Add more languages if you have them in your `vocabulary.translations` */}
-            </select>
+            <TranslationLanguageSelector />
           </div>
 
           <button
