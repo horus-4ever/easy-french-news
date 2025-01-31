@@ -8,9 +8,10 @@ import { AudioStateProvider } from '@/context/AudioStateContext';
 import MiniPlayer from '@/components/audio/MiniPlayer';
 import { ErrorProvider } from '@/context/ErrorContext';
 import ErrorBanner from '@/components/ErrorBanner';
-
-// 1) Import the new TranslationProvider
 import { TranslationProvider } from '@/context/TranslationContext';
+
+// Import the new provider
+import { ReadArticlesProvider } from '@/context/ReadArticlesContext';
 
 export const metadata: Metadata = {
   title: 'French Learning App',
@@ -26,16 +27,17 @@ export default function RootLayout({
     <html lang="fr">
       <body>
         <AppContextProvider>
-          {/* Wrap everything in TranslationProvider */}
           <TranslationProvider>
             <ErrorProvider>
               <AudioStateProvider>
-                <Navbar />
-                <ErrorBanner />
-                <main className="min-h-screen bg-gray-50 p-4 dark:bg-gray-900">
-                  {children}
-                </main>
-                <MiniPlayer />
+                <ReadArticlesProvider>
+                  <Navbar />
+                  <ErrorBanner />
+                  <main className="min-h-screen bg-gray-50 p-4 dark:bg-gray-900">
+                    {children}
+                  </main>
+                  <MiniPlayer />
+                </ReadArticlesProvider>
               </AudioStateProvider>
             </ErrorProvider>
           </TranslationProvider>

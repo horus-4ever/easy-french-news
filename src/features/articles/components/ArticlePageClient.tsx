@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, version } from 'react';
+import React, { useEffect } from 'react';
 import DifficultyToggle from '@/features/articles/components/DifficultyToggle';
 import { useAudioState } from '@/context/AudioStateContext';
 import AudioPlayer from '@/components/audio/AudioPlayer';
@@ -9,6 +9,7 @@ import GrammarSection from './GrammarSection';
 import QuizSection from './QuizSection';
 import VocabTable from './VocabTable';
 import { IArticle } from '../types/article';
+import { useReadArticles } from '@/context/ReadArticlesContext';
 
 interface ArticlePageClientProps {
   easyContent: any;
@@ -17,10 +18,18 @@ interface ArticlePageClientProps {
 }
 
 export default function ArticlePageClient({ easyContent, mediumContent, article }: ArticlePageClientProps) {
-  const [difficulty, setDifficulty] = useState<'easy' | 'medium'>('easy');
   const { audioRef, setIsPlaying, setCurrentTime, setMiniPlayerClosed } = useAudioState();
+  const { markAsRead } = useReadArticles();
 
-  // Whenever difficulty changes, we do a few things:
+  // Mark the article as read when this component mounts
+  useEffect(() => {
+    markAsRead(article._id);
+  }, [article._id, markAsRead]);
+
+  const [difficulty, setDifficulty] = React.useState<'easy' | 'medium'>('easy');
+  const version = difficulty === 'easy' ? article.easyVersion : article.mediumVersion;
+
+  // Reset the audio state when difficulty changes
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.pause();
@@ -30,8 +39,6 @@ export default function ArticlePageClient({ easyContent, mediumContent, article 
     }
     setMiniPlayerClosed(true);
   }, [difficulty, audioRef, setIsPlaying, setCurrentTime, setMiniPlayerClosed]);
-
-  const version = difficulty === 'easy' ? article.easyVersion : article.mediumVersion;
 
   return (
     <div className="container mx-auto flex flex-col md:flex-row gap-8 dark:bg-gray-900 dark:text-gray-100">
@@ -44,7 +51,6 @@ export default function ArticlePageClient({ easyContent, mediumContent, article 
           </div>
         </div>
 
-        {/* Add space below the title */}
         <div className="mt-6">
           {difficulty === 'easy' ? (
             <ArticleDetail content={easyContent} />
@@ -53,7 +59,6 @@ export default function ArticlePageClient({ easyContent, mediumContent, article 
           )}
         </div>
 
-        {/* Link to original article (subtle) */}
         <div className="text-right text-sm text-gray-400 dark:text-gray-500 mt-2">
           <a
             href={article.sourceUrl}
@@ -65,22 +70,16 @@ export default function ArticlePageClient({ easyContent, mediumContent, article 
           </a>
         </div>
 
-        {/* Audio player */}
         <div className="mt-4">
           <AudioPlayer src={version.audioUrl}></AudioPlayer>
         </div>
 
         <br />
-
-        {/* Quiz section */}
         <QuizSection questions={version.questions} />
         <br />
-
-        {/* Grammar Section */}
         <GrammarSection grammarPoints={version.grammarPoints} />
       </div>
 
-      {/* Right side panel for vocabulary & grammar */}
       <aside className="w-full md:w-1/3 bg-white dark:bg-gray-800 rounded-md shadow p-4 h-fit self-start">
         <h1 className="text-2xl font-semibold text-green-400 dark:text-green-500">🧠 Vocabulaire (語彙)</h1>
         <VocabTable vocabulary={version.vocabulary} />

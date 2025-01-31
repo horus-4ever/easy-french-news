@@ -1,19 +1,15 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { debounce } from '@/lib/utils';
 import { useAudioState } from '@/context/AudioStateContext';
 import { useArticles } from '@/features/articles/hooks/useArticles';
 import ArticlesGrid from '@/features/home/components/ArticlesGrid';
 import LoadingMessage from '@/features/home/components/LoadingMessage';
 import Filter from '@/features/home/components/Filter';
-import Header from './Header';
+import { FiFilter } from 'react-icons/fi';
+import { useReadArticles } from '@/context/ReadArticlesContext';
 
-/**
- * Props from server:
- *   - initialArticles: first chunk of articles (no tags)
- *   - availableTags: the full set of tags user can filter by (from DB or wherever)
- */
 interface HomePageClientProps {
   initialArticles: any[];
   availableTags: string[];
@@ -23,77 +19,109 @@ export default function HomePageClient({
   initialArticles,
   availableTags,
 }: HomePageClientProps) {
-  // Audio context
+  // Audio context: close mini player
   const { setMiniPlayerClosed } = useAudioState();
-
-  // On mount, close the mini player
   useEffect(() => {
     setMiniPlayerClosed(true);
   }, [setMiniPlayerClosed]);
 
-  // The user-chosen tags for filtering
+  // Tag filtering (for "all articles" mode)
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [tagsChanged, setTagsChanged] = useState<boolean>(false);
 
-  // We use our custom hook for infinite scroll, passing in the tags and initial data
-  const {
-    articles,
-    loading,
-    hasMore,
-    setPage,
-    resetDataForNewTags,  // We'll add a function to handle tag change in the hook or logic
-  } = useArticles({
+  const { articles, loading, hasMore, setPage, resetDataForNewTags } = useArticles({
     tags: selectedTags,
     tagsChanged: tagsChanged,
     limit: 6,
     initialData: initialArticles,
   });
 
-  // Toggle Filter panel if you want
+  // Toggle for tag filters and "Show Only Read" mode
   const [showFilter, setShowFilter] = useState(false);
   const toggleFilter = () => setShowFilter((prev) => !prev);
 
-  // Called when user toggles a specific tag
   const handleTagChange = (tag: string) => {
     setSelectedTags((prev) =>
-      prev.includes(tag)
-        ? prev.filter((t) => t !== tag)
-        : [...prev, tag]
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
     );
     setTagsChanged(true);
   };
 
-  // Whenever selectedTags changes, we want to reset to page=1, empty out the old articles, and re-fetch
-  // We'll do that in a useEffect, or in the hook's "resetDataForNewTags"
   useEffect(() => {
-    if(tagsChanged) {
-        resetDataForNewTags(selectedTags);
+    if (tagsChanged) {
+      resetDataForNewTags(selectedTags);
     }
   }, [tagsChanged, selectedTags, resetDataForNewTags]);
 
-  // Infinite scroll effect
-  useEffect(() => {
-    const handleScroll = debounce(() => {
-      if (
-        window.innerHeight + window.scrollY >=
-        document.body.offsetHeight - 100
-      ) {
-        if (!loading && hasMore) {
-          setPage((prev) => prev + 1);
-        }
-      }
-    }, 300);
-    window.addEventListener('scroll', handleScroll);
+  // Toggle between "All Articles" and "Read Articles" mode
+  const { readArticles } = useReadArticles();
+  const [showOnlyRead, setShowOnlyRead] = useState(false);
+  const [readArticlesData, setReadArticlesData] = useState<any[]>([]);
+  const [loadingRead, setLoadingRead] = useState(false);
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [loading, hasMore, setPage]);
+  useEffect(() => {
+    if (showOnlyRead) {
+      if (readArticles.length > 0) {
+        setLoadingRead(true);
+        fetch(`/api/articles/read?ids=${readArticles.join(",")}`)
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success) {
+              setReadArticlesData(data.data);
+            }
+          })
+          .catch((err) => console.error("Error fetching read articles:", err))
+          .finally(() => setLoadingRead(false));
+      } else {
+        setReadArticlesData([]);
+      }
+    }
+  }, [showOnlyRead, readArticles]);
+
+  // Infinite scroll (only for "all articles" mode)
+  useEffect(() => {
+    if (!showOnlyRead) {
+      const handleScroll = debounce(() => {
+        if (
+          window.innerHeight + window.scrollY >= document.body.offsetHeight - 100
+        ) {
+          if (!loading && hasMore) {
+            setPage((prev) => prev + 1);
+          }
+        }
+      }, 300);
+      window.addEventListener('scroll', handleScroll);
+
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, [loading, hasMore, setPage, showOnlyRead]);
 
   return (
     <div className="container mx-auto p-4">
-      {/* Example: A button to toggle filter UI */}
-      <Header toggleFilter={toggleFilter} />
+      {/* Header: title and buttons on the same line */}
+      <div className="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center mb-4">
+  <h1 className="text-2xl font-bold">Derniers articles</h1>
+  <div className="flex gap-2 w-full sm:w-auto mt-2 sm:mt-0">
+    <button
+      onClick={toggleFilter}
+      className="inline-flex items-center justify-center gap-2 px-4 py-2 h-fit border rounded-lg bg-green-600 text-white hover:bg-green-700 dark:border-green-900 w-full sm:w-auto text-center"
+    >
+      <FiFilter /> Filtres
+    </button>
+    <button
+      onClick={() => setShowOnlyRead((prev) => !prev)}
+      className="inline-flex items-center justify-center gap-2 px-4 py-2 h-fit border rounded-lg bg-blue-600 text-white hover:bg-blue-700 dark:border-blue-900 w-full sm:w-auto text-center"
+    >
+      {showOnlyRead ? "Show All Articles" : "Show Only Read"}
+    </button>
+  </div>
+</div>
+
+
+
+      {/* Optionally render filter options if toggled */}
       {showFilter && (
         <Filter
           labels={availableTags}
@@ -102,8 +130,21 @@ export default function HomePageClient({
         />
       )}
 
-      <ArticlesGrid articles={articles} />
-      <LoadingMessage loading={loading} hasMore={hasMore} />
+      {/* Display articles */}
+      {showOnlyRead ? (
+        <>
+          {loadingRead ? (
+            <LoadingMessage loading={true} hasMore={false} />
+          ) : (
+            <ArticlesGrid articles={readArticlesData} />
+          )}
+        </>
+      ) : (
+        <>
+          <ArticlesGrid articles={articles} />
+          <LoadingMessage loading={loading} hasMore={hasMore} />
+        </>
+      )}
     </div>
   );
 }

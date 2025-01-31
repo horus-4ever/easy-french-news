@@ -1,5 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { useReadArticles } from '@/context/ReadArticlesContext';
+import { FiCheck } from 'react-icons/fi';
 
 interface Props {
   id: string;
@@ -16,8 +18,21 @@ export default function ArticleCard({
   labels,
   publishDate
 }: Props) {
+  const { readArticles } = useReadArticles();
+  const isRead = readArticles.includes(id);
+
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-md shadow hover:shadow-lg transition p-4">
+    <div className="relative bg-white dark:bg-gray-800 rounded-md shadow hover:shadow-lg transition p-4">
+      {/* Bigger checkmark icon placed on the LEFT side */}
+      {isRead && (
+        <div className="absolute top-2 left-2 z-10">
+          <FiCheck 
+            size={40} 
+            className="text-green-500 bg-white dark:bg-gray-800 rounded-full p-1 border-4 border-green-500 shadow-xl" 
+          />
+        </div>
+      )}
+
       <Link href={`/articles/${id}`}>
         <div className="relative h-48 w-full mb-2">
           {imageUrl ? (
@@ -36,11 +51,16 @@ export default function ArticleCard({
             </div>
           )}
         </div>
-        <h2 className="text-lg font-bold mb-2 text-gray-900 dark:text-gray-100">{title}</h2>
+        <h2 className="text-lg font-bold mb-2 text-gray-900 dark:text-gray-100">
+          {title}
+        </h2>
         {labels && labels.length > 0 && (
           <div className="mb-2 flex flex-wrap gap-1">
             {labels.map((label) => (
-              <span key={label} className="bg-blue-100 dark:bg-blue-800 text-blue-600 dark:text-blue-300 px-2 py-1 rounded text-sm">
+              <span
+                key={label}
+                className="bg-blue-100 dark:bg-blue-800 text-blue-600 dark:text-blue-300 px-2 py-1 rounded text-sm"
+              >
                 {label}
               </span>
             ))}

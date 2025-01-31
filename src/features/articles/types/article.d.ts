@@ -51,6 +51,7 @@ interface OldIArticleVersion {
 }
 
 export interface IArticle extends Document {
+  _id: string;
   title: string;
   sourceUrl: string;
   imageUrl: string;
