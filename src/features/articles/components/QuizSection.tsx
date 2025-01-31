@@ -3,16 +3,10 @@
 import React, { useState } from 'react';
 import QuizQuestion from '@/features/articles/components/QuizQuestion';
 import { FaChevronDown, FaChevronRight } from 'react-icons/fa';
-
-interface Question {
-  id: number;
-  questionText: string;
-  options: string[];
-  correctAnswer: string;
-}
+import { IQuestion } from '../types/article';
 
 interface QuizSectionProps {
-  questions: Question[];
+  questions: IQuestion[];
 }
 
 export default function QuizSection({ questions }: QuizSectionProps) {

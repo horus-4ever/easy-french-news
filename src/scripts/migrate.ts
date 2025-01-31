@@ -1,5 +1,5 @@
 import dbConnect from '@/lib/dbConnect';
-import Article from '@/features/articles/models/Article';
+import { Article } from '@/features/articles/models/Article';
 
 export async function migrateDates() {
   await dbConnect();
