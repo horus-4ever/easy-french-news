@@ -9,6 +9,7 @@ import useNavHeight from '@/hooks/useNavHeight';
 
 // 1) import the translation context:
 import { useTranslationContext } from '@/context/TranslationContext';
+import TranslationLanguageSelector from '../TranslationLanguageSelector';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -97,14 +98,7 @@ export default function Navbar() {
           </div>
 
           {/* Also show language selector in the mobile menu if you want */}
-          <select
-            value={language}
-            onChange={handleLanguageChange}
-            className="p-2 text-black rounded-md dark:text-white dark:bg-gray-700"
-          >
-            <option value="japanese">Japanese</option>
-            <option value="english">English</option>
-          </select>
+          <TranslationLanguageSelector />
         </div>
       </div>
     </>
