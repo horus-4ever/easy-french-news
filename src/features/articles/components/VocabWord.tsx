@@ -1,20 +1,23 @@
 "use client";
 
 import React, { ReactNode, useRef, useEffect, useState } from 'react';
+import { useTranslationContext } from '@/context/TranslationContext';
 
 interface VocabWordProps {
   word: string;
-  translation: string;
+  translations: { [lang: string]: string }; // e.g. { japanese: "...", english: "..." }
   category: string;
   children: ReactNode;
 }
 
 export default function VocabWord({
   word,
-  translation,
+  translations,
   category,
   children
 }: VocabWordProps) {
+  const { language } = useTranslationContext(); // 1) Get the chosen language
+
   const [position, setPosition] = useState<'left' | 'right' | 'center'>('center');
   const [visible, setVisible] = useState(false);
   const tooltipRef = useRef<HTMLSpanElement>(null);
@@ -23,7 +26,7 @@ export default function VocabWord({
   const adjustTooltip = () => {
     if (tooltipRef.current) {
       const rect = tooltipRef.current.getBoundingClientRect();
-      const windowWidth = window.outerWidth;
+      const windowWidth = window.innerWidth;
       if (rect.left < 0) {
         setPosition('right');
       } else if (rect.right > windowWidth) {
@@ -32,13 +35,8 @@ export default function VocabWord({
     }
   };
 
-  const handleMouseEnter = () => {
-    setVisible(true);
-  };
-
-  const handleMouseLeave = () => {
-    setVisible(false);
-  };
+  const handleMouseEnter = () => setVisible(true);
+  const handleMouseLeave = () => setVisible(false);
 
   useEffect(() => {
     window.addEventListener('resize', adjustTooltip);
@@ -46,8 +44,11 @@ export default function VocabWord({
   }, []);
 
   useEffect(() => {
-    if(visible) adjustTooltip();
+    if (visible) adjustTooltip();
   }, [visible]);
+
+  // 2) Safely pick the translation from translations[language]. Fallback to "japanese" if missing
+  const displayedTranslation = translations[language] ?? translations["japanese"] ?? "No translation";
 
   return (
     <span
@@ -83,7 +84,7 @@ export default function VocabWord({
         >
           <strong>{word}</strong>
           <br />
-          {translation}
+          {displayedTranslation}
         </span>
       )}
     </span>

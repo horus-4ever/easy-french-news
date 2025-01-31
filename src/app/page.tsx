@@ -3,6 +3,7 @@ import dbConnect from '@/lib/dbConnect';
 import { getArticles } from '@/features/articles/services/articleService';
 import HomePageClient from '@/features/home/components/HomePageClient';
 import getLabels from '@/lib/services/labelsService';
+import { migrateVocabulary } from '@/scripts/migrateVocabulary';
 
 /**
  * A server-side function to fetch the first chunk of articles

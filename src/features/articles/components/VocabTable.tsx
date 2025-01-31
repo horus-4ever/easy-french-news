@@ -4,15 +4,11 @@ import React, { useState } from 'react';
 import ConjugationPopup from '@/features/articles/components/ConjugationPopup';
 import { fetchConjugation } from '@/features/conjugation/api/api';
 import { useErrorContext } from '@/context/ErrorContext';
-
-interface IVocabulary {
-  word: string;
-  translation: string;
-  category: string;
-}
+import { IVocabulary } from '../types/article';
+import { useTranslationContext } from '@/context/TranslationContext';
 
 interface VocabTableProps {
-  vocabulary: IVocabulary[];
+  vocabulary: IVocabulary;
 }
 
 export default function VocabTable({ vocabulary }: VocabTableProps) {
@@ -21,20 +17,24 @@ export default function VocabTable({ vocabulary }: VocabTableProps) {
   const [conjugation, setConjugation] = useState<string | null>(null);
   const { setError } = useErrorContext();
 
+  // 1) Read current language from context
+  const { language } = useTranslationContext();
+
+  // Helper: is this a verb?
   const isVerb = (category: string) =>
     ['verb1', 'verb2', 'verb3'].includes(category.toLowerCase());
 
   const handleVerbClick = (verb: string) => {
     fetchConjugation(verb).then((data) => {
-      if(!data.success) {
+      if (!data.success) {
         setError(`Impossible de récupérer la conjugaison de "${verb}".`);
         return;
       }
       setSelectedVerb(verb);
       setConjugation(data.conjugation);
       setPopupOpen(true);
-    }
-  )};
+    });
+  };
 
   return (
     <>
@@ -47,31 +47,44 @@ export default function VocabTable({ vocabulary }: VocabTableProps) {
             </tr>
           </thead>
           <tbody>
-            {vocabulary.map((vocab, index) => (
-              <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-600">
-                <td className="py-2 px-4 border dark:border-gray-700 text-gray-800 dark:text-gray-200">
-                  {isVerb(vocab.category) ? (
-                    <span
-                      onClick={() => handleVerbClick(vocab.word)}
-                      className="font-bold underline text-blue-600 dark:text-blue-400 cursor-pointer"
-                    >
-                      {vocab.word}
+            {vocabulary.words.map((word, index) => {
+              // 2) Safely pick the translation for the current language. 
+              //    Fallback to "japanese" if none found.
+              const translationArr = vocabulary.translations[language] 
+                ?? vocabulary.translations["japanese"];
+
+              const translation = translationArr
+                ? translationArr[index]
+                : "No translation";
+
+              return (
+                <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <td className="py-2 px-4 border dark:border-gray-700 text-gray-800 dark:text-gray-200">
+                    {isVerb(vocabulary.category[index]) ? (
+                      <span
+                        onClick={() => handleVerbClick(word)}
+                        className="font-bold underline text-blue-600 dark:text-blue-400 cursor-pointer"
+                      >
+                        {word}
+                      </span>
+                    ) : (
+                      <span className="font-bold">{word}</span>
+                    )}
+                    ,{' '}
+                    <span className="text-sm italic text-gray-600 dark:text-gray-400">
+                      {vocabulary.category[index]}
                     </span>
-                  ) : (
-                    <span className="font-bold">{vocab.word}</span>
-                  )}
-                  , <span className="text-sm italic text-gray-600 dark:text-gray-400">{vocab.category}</span>
-                </td>
-                <td className="py-2 px-4 border dark:border-gray-700 text-gray-800 dark:text-gray-200">
-                  {vocab.translation}
-                </td>
-              </tr>
-            ))}
+                  </td>
+                  <td className="py-2 px-4 border dark:border-gray-700 text-gray-800 dark:text-gray-200">
+                    {translation}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
 
-      {/* Conjugation Popup Rendered at Root Level */}
       {popupOpen && selectedVerb && (
         <div>
           <ConjugationPopup

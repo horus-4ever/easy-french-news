@@ -1,4 +1,4 @@
-import Article from '@/features/articles/models/Article';
+import { Article } from '@/features/articles/models/Article';
 import { BadRequestError } from '@/lib/errors/errorTypes';
 import mongoose from 'mongoose';
 

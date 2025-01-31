@@ -35,8 +35,8 @@ export default function QuizSection({ questions }: QuizSectionProps) {
         }`}
       >
         <div className="mt-4 space-y-4">
-          {questions.map((q) => (
-            <QuizQuestion key={q.id} question={q} />
+          {questions.map((q, idx) => (
+            <QuizQuestion key={idx} question={q} />
           ))}
         </div>
       </div>

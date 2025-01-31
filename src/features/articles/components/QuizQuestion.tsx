@@ -1,16 +1,10 @@
 "use client";
 
 import React, { useState } from 'react';
-
-interface Question {
-  id: number;
-  questionText: string;
-  options: string[];
-  correctAnswer: string;
-}
+import { IQuestion } from '../types/article';
 
 interface QuizQuestionProps {
-  question: Question;
+  question: IQuestion;
 }
 
 export default function QuizQuestion({ question }: QuizQuestionProps) {
@@ -19,7 +13,7 @@ export default function QuizQuestion({ question }: QuizQuestionProps) {
 
   const handleOptionSelect = (option: string) => {
     setSelectedOption(option);
-    setIsCorrect(option === question.correctAnswer);
+    setIsCorrect(option === question.options[question.correctAnswer]);
   };
 
   return (

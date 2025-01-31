@@ -7,10 +7,16 @@ import NavLinks from './NavLinks';
 import DarkModeToggle from './DarkModeToggle';
 import useNavHeight from '@/hooks/useNavHeight';
 
+// 1) import the translation context:
+import { useTranslationContext } from '@/context/TranslationContext';
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const navRef = useRef(null);
   const [navHeight] = useNavHeight(navRef);
+
+  // 2) Grab language + setter from context
+  const { language, setLanguage } = useTranslationContext();
 
   useEffect(() => {
     if (open) {
@@ -26,6 +32,11 @@ export default function Navbar() {
 
   const toggleMenu = () => {
     setOpen(!open);
+  };
+
+  // 3) Handler for <select> changes
+  function handleLanguageChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    setLanguage(e.target.value);
   }
 
   return (
@@ -46,6 +57,18 @@ export default function Navbar() {
             <div className="flex items-center">
               <DarkModeToggle />
             </div>
+
+            {/* 4) Language Selector */}
+            <select
+              value={language}
+              onChange={handleLanguageChange}
+              className="ml-4 p-2 text-black rounded-md dark:text-white dark:bg-gray-700"
+              aria-label="Select Translation Language"
+            >
+              <option value="japanese">Japanese</option>
+              <option value="english">English</option>
+              {/* Add more languages if you have them in your `vocabulary.translations` */}
+            </select>
           </div>
 
           <button
@@ -72,6 +95,16 @@ export default function Navbar() {
           <div className="flex items-center">
             <DarkModeToggle />
           </div>
+
+          {/* Also show language selector in the mobile menu if you want */}
+          <select
+            value={language}
+            onChange={handleLanguageChange}
+            className="p-2 text-black rounded-md dark:text-white dark:bg-gray-700"
+          >
+            <option value="japanese">Japanese</option>
+            <option value="english">English</option>
+          </select>
         </div>
       </div>
     </>

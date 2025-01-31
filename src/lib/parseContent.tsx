@@ -1,15 +1,16 @@
 import parse, { DOMNode, domToReact, Element } from 'html-react-parser';
 import VocabWord from '@/features/articles/components/VocabWord';
 import PlaceWord from '@/features/places/components/PlaceWord';
+import { IVocabulary } from '@/features/articles/types/article';
 
-/**
- * IVocabulary is your existing interface for word, translation, category, etc.
- * If you have a different name or shape, adjust accordingly.
- */
-interface IVocabulary {
-  word: string;
-  category: string;
-  translation: string;
+
+function getTranslations(translations: any, id: number) {
+  const result: any = {}
+  for(const language in translations) {
+    result[language] = translations[language][id];
+    result["english"] = "[[coming soon]]";
+  }
+  return result;
 }
 
 /**
@@ -20,7 +21,7 @@ interface IVocabulary {
  * param `html`: the raw HTML string
  * param `vocabList`: the array of vocabulary objects (for the <vocab> tags)
  */
-export function parseContentHtml(html: string, vocabList: IVocabulary[]) {
+export function parseContentHtml(html: string, vocabList: IVocabulary) {
   return parse(html, {
     replace: (domNode) => {
       if (!(domNode instanceof Element)) return;
@@ -29,16 +30,18 @@ export function parseContentHtml(html: string, vocabList: IVocabulary[]) {
       if (domNode.name === 'vocab') {
         const children = (domNode as Element).children as DOMNode[];
         const textContent = domToReact(children).toString().trim();
-        const vocabId = (domNode as Element).attribs['vocab-id'];
+        const vocabId = parseInt((domNode as Element).attribs['vocab-id'], 10);
 
         // If vocabId is provided, try to map to the vocabulary list
-        if (vocabId !== undefined && vocabList[parseInt(vocabId, 10)]) {
-          const match = vocabList[parseInt(vocabId, 10)];
+        if (vocabId !== undefined && vocabList.words[vocabId]) {
+          const matchWord = vocabList.words[vocabId];
+          const matchTranslations = getTranslations(vocabList.translations, vocabId);
+          const matchCategory = vocabList.category[vocabId];
           return (
             <VocabWord
-              word={match.word}
-              translation={match.translation}
-              category={match.category}
+              word={matchWord}
+              translations={matchTranslations}
+              category={matchCategory}
             >
               {textContent}
             </VocabWord>
