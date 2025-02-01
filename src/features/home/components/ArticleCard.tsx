@@ -78,7 +78,6 @@ export default function ArticleCard({
         )}
 
         {/* Additional enlarged toggle switch, only visible when the article is marked as read */}
-        {isRead && (
           <label className="relative cursor-pointer">
             {/* Hidden checkbox */}
             <input
@@ -92,7 +91,6 @@ export default function ArticleCard({
             {/* Switch thumb */}
             <div className="absolute left-[2px] top-[2px] w-4 h-4 bg-white border border-gray-300 dark:border-gray-500 rounded-full transition-transform peer-checked:translate-x-5"></div>
           </label>
-        )}
       </div>
     </div>
   );
