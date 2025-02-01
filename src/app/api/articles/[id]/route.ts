@@ -16,7 +16,7 @@ export async function GET(
 
     const article = await getArticleById(id);
     const response = NextResponse.json({ success: true, data: article });
-    response.headers.set('Cache-Control', 'public, max-age=10'); // cache for 1/2 hour
+    response.headers.set('Cache-Control', 'public, max-age=1800'); // cache for 1/2 hour
     return response;
   } catch (error: any) {
     return handleApiError(error);

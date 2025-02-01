@@ -89,7 +89,7 @@ export default function HomePageClient({
             setPage((prev) => prev + 1);
           }
         }
-      }, 300);
+      }, 150);
       window.addEventListener('scroll', handleScroll);
 
       return () => {
