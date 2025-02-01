@@ -8,7 +8,6 @@ function getTranslations(translations: any, id: number) {
   const result: any = {}
   for(const language in translations) {
     result[language] = translations[language][id];
-    result["english"] = "[[coming soon]]";
   }
   return result;
 }

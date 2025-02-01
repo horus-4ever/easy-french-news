@@ -18,12 +18,12 @@ export default function ArticleCard({
   labels,
   publishDate
 }: Props) {
-  const { readArticles } = useReadArticles();
+  const { readArticles, toggleRead } = useReadArticles();
   const isRead = readArticles.includes(id);
 
   return (
     <div className="relative bg-white dark:bg-gray-800 rounded-md shadow hover:shadow-lg transition p-4">
-      {/* Bigger checkmark icon placed on the LEFT side */}
+      {/* Big checkmark icon on the LEFT side (remains unchanged) */}
       {isRead && (
         <div className="absolute top-2 left-2 z-10">
           <FiCheck 
@@ -33,6 +33,7 @@ export default function ArticleCard({
         </div>
       )}
 
+      {/* Link wraps image, title, and labels */}
       <Link href={`/articles/${id}`}>
         <div className="relative h-48 w-full mb-2">
           {imageUrl ? (
@@ -66,12 +67,33 @@ export default function ArticleCard({
             ))}
           </div>
         )}
+      </Link>
+
+      {/* Publish date and enlarged toggle switch on the same line */}
+      <div className="flex items-center justify-between mt-2">
         {publishDate && (
           <p className="text-xs text-gray-500 dark:text-gray-400">
             Published on {new Date(publishDate).toUTCString()}
           </p>
         )}
-      </Link>
+
+        {/* Additional enlarged toggle switch, only visible when the article is marked as read */}
+        {isRead && (
+          <label className="relative cursor-pointer">
+            {/* Hidden checkbox */}
+            <input
+              type="checkbox"
+              className="sr-only peer"
+              checked={isRead}
+              onChange={() => toggleRead(id)}
+            />
+            {/* Switch background */}
+            <div className="w-10 h-5 bg-gray-300 dark:bg-gray-600 rounded-full transition-colors peer-checked:bg-blue-500 dark:peer-checked:bg-blue-400"></div>
+            {/* Switch thumb */}
+            <div className="absolute left-[2px] top-[2px] w-4 h-4 bg-white border border-gray-300 dark:border-gray-500 rounded-full transition-transform peer-checked:translate-x-5"></div>
+          </label>
+        )}
+      </div>
     </div>
   );
 }
