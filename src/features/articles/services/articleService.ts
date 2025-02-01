@@ -32,3 +32,17 @@ export async function getArticleById(id: string) {
     }
     return article;
 }
+
+/**
+ * Fetches articles based on an array of IDs.
+ *
+ * @param ids - An array of article IDs.
+ * @returns A promise that resolves to an array of articles.
+ */
+export async function getArticlesByIds(ids: string[]) {
+    const articles = await Article.find({ _id: { $in: ids } })
+      .sort({ publishDate: -1 })
+      .select('title imageUrl labels publishDate')
+      .exec();
+    return articles;
+  }
