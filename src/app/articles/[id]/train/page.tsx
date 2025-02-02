@@ -6,8 +6,8 @@ import { IArticle } from '@/features/articles/types/article';
 import { fetchArticleById } from '@/features/articles/api/api';
 
 type Props = {
-  params: { id: string };
-  searchParams: { difficulty: string };
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ difficulty: string }>;
 };
 
 export default function FlashcardsPage({ params, searchParams }: Props) {
