@@ -22,19 +22,22 @@ export default function ArticleCard({
   const isRead = readArticles.includes(id);
 
   return (
-    <div className="relative bg-white dark:bg-gray-800 rounded-md shadow hover:shadow-lg transition p-4">
-      {/* Big checkmark icon on the LEFT side (remains unchanged) */}
+    <div className="relative bg-white dark:bg-gray-800 rounded-md shadow hover:shadow-lg transition p-4 flex flex-col justify-between h-full">
+      {/* Big checkmark icon on the LEFT side */}
       {isRead && (
         <div className="absolute top-2 left-2 z-10">
-          <FiCheck 
-            size={40} 
-            className="text-green-500 bg-white dark:bg-gray-800 rounded-full p-1 border-4 border-green-500 shadow-xl" 
+          <FiCheck
+            size={40}
+            className="text-green-500 bg-white dark:bg-gray-800 rounded-full p-1 border-4 border-green-500"
+            style={{
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', // Thin shadow for contrast
+            }}
           />
         </div>
       )}
 
       {/* Link wraps image, title, and labels */}
-      <Link href={`/articles/${id}`}>
+      <Link href={`/articles/${id}`} className="flex-grow">
         <div className="relative h-48 w-full mb-2">
           {imageUrl ? (
             <Image
@@ -69,28 +72,27 @@ export default function ArticleCard({
         )}
       </Link>
 
-      {/* Publish date and enlarged toggle switch on the same line */}
-      <div className="flex items-center justify-between mt-2">
+      {/* Publish date and toggle switch */}
+      <div className="flex items-center justify-between mt-2 border-t border-gray-200 dark:border-gray-700 pt-2">
         {publishDate && (
           <p className="text-xs text-gray-500 dark:text-gray-400">
             Published on {new Date(publishDate).toUTCString()}
           </p>
         )}
 
-        {/* Additional enlarged toggle switch, only visible when the article is marked as read */}
-          <label className="relative cursor-pointer">
-            {/* Hidden checkbox */}
-            <input
-              type="checkbox"
-              className="sr-only peer"
-              checked={isRead}
-              onChange={() => toggleRead(id)}
-            />
-            {/* Switch background */}
-            <div className="w-10 h-5 bg-gray-300 dark:bg-gray-600 rounded-full transition-colors peer-checked:bg-blue-500 dark:peer-checked:bg-blue-400"></div>
-            {/* Switch thumb */}
-            <div className="absolute left-[2px] top-[2px] w-4 h-4 bg-white border border-gray-300 dark:border-gray-500 rounded-full transition-transform peer-checked:translate-x-5"></div>
-          </label>
+        <label className="relative cursor-pointer">
+          {/* Hidden checkbox */}
+          <input
+            type="checkbox"
+            className="sr-only peer"
+            checked={isRead}
+            onChange={() => toggleRead(id)}
+          />
+          {/* Switch background */}
+          <div className="w-10 h-5 bg-gray-300 dark:bg-gray-600 rounded-full transition-colors peer-checked:bg-blue-500 dark:peer-checked:bg-blue-400"></div>
+          {/* Switch thumb */}
+          <div className="absolute left-[2px] top-[2px] w-4 h-4 bg-white border border-gray-300 dark:border-gray-500 rounded-full transition-transform peer-checked:translate-x-5"></div>
+        </label>
       </div>
     </div>
   );
