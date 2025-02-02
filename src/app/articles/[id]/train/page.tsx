@@ -61,8 +61,8 @@ export default function FlashcardsPage({ params, searchParams }: Props) {
           onClick={() => handleSelectDifficulty("easy")}
           className={`px-4 py-2 mr-2 rounded transition 
                       ${difficulty === "easy" 
-                        ? "bg-blue-600 text-white" 
-                        : "bg-gray-200 dark:bg-gray-700 text-gray-800"}`}
+                        ? "bg-blue-600 text-white dark:bg-blue-500" 
+                        : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"}`}
         >
           Easy
         </button>
@@ -70,8 +70,8 @@ export default function FlashcardsPage({ params, searchParams }: Props) {
           onClick={() => handleSelectDifficulty("medium")}
           className={`px-4 py-2 rounded transition 
                       ${difficulty === "medium" 
-                        ? "bg-blue-600 text-white" 
-                        : "bg-gray-200 dark:bg-gray-700 text-gray-800"}`}
+                        ? "bg-blue-600 text-white dark:bg-blue-500" 
+                        : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"}`}
         >
           Medium
         </button>
