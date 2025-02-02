@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IVocabulary } from '@/features/articles/types/article';
 import { FiChevronLeft, FiChevronRight, FiRotateCw } from 'react-icons/fi';
 import { useTranslationContext } from '@/context/TranslationContext';
@@ -13,15 +13,15 @@ interface MinimalFlashcardProps {
 /**
  * MinimalFlashcard displays an interactive flashcard with a stack effect.
  * The top card can be flipped by tapping and swiped to navigate.
- * When navigating, the new card always appears on its default (front) side.
- * The card counter (in the format "n / total") is shown directly on the card.
- * The overlay on the top card always appears upright regardless of the flip,
- * and the underlying (stack) card also shows its counter while swiping.
+ * When swiping, the card not only translates horizontally but also tilts
+ * (rotates around the Z-axis) according to the drag value.
  *
- * The flashcard text is now bold and a bit larger.
+ * The new card always appears on its default (front) side.
+ * The card counter (in the format "n / total") is shown directly on the card.
+ * Additional tweaks (translateZ(0), will-change) help fix Firefox rendering issues.
  */
 export default function MinimalFlashcard({
-  vocab
+  vocab,
 }: MinimalFlashcardProps) {
   // State for current card index and flip status.
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -34,8 +34,8 @@ export default function MinimalFlashcard({
   // Flag to temporarily disable transition when switching cards.
   const [disableTransition, setDisableTransition] = useState(false);
   const [translationsArr, setTranslationsArr] = useState<string[]>([]);
-  const [back, setBack] = useState<string>();
-  const [front, setFront] = useState<string>();
+  const [front, setFront] = useState<string>('');
+  const [back, setBack] = useState<string>('');
   const [totalCards, setTotalCards] = useState<number>(0);
 
   const { language } = useTranslationContext();
@@ -53,11 +53,9 @@ export default function MinimalFlashcard({
   useEffect(() => {
     setFront(vocab.words[currentIndex]);
     setBack(translationsArr[currentIndex] || 'No translation available');
-  }, [currentIndex, translationsArr]);
+  }, [currentIndex, translationsArr, vocab.words]);
 
   // Compute the underlying (stack) card index.
-  // If dragging left (delta negative), show the next card;
-  // if dragging right (delta positive), show the previous card.
   const stackIndex =
     dragX < 0
       ? (currentIndex + 1) % totalCards
@@ -66,18 +64,26 @@ export default function MinimalFlashcard({
       : (currentIndex + 1) % totalCards;
   const stackCard = vocab.words[stackIndex];
 
+  // Compute a tilt angle (rotateZ) based on dragX.
+  // We'll allow a maximum tilt of 15 degrees.
+  const maxAngle = 15;
+  const threshold = 200; // pixels needed to reach maximum tilt
+  const rawAngle = (dragX / threshold) * maxAngle;
+  const angle = Math.max(-maxAngle, Math.min(maxAngle, rawAngle));
+
   // Combined transform for the top (interactive) card.
-  const topTransform = `translateX(${dragX}px) rotateY(${isFlipped ? 180 : 0}deg)`;
+  // It now translates horizontally, rotates along Y (for flip) and rotates along Z (tilt during swipe).
+  const topTransform = `translateX(${dragX}px) rotateY(${isFlipped ? 180 : 0}deg) rotateZ(${angle}deg)`;
   const transitionStyle =
     isDragging || disableTransition ? 'none' : 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
 
-  // Navigation helper: update card index and always reset the flip state.
+  // Navigation helper: update card index and reset flip state.
   const navigateCard = (direction: 'next' | 'prev') => {
     setDisableTransition(true);
     setCurrentIndex((prev) =>
       direction === 'next' ? (prev + 1) % totalCards : (prev - 1 + totalCards) % totalCards
     );
-    // Always reset the flip state so that the new card appears on the front.
+    // Always reset the flip state so the new card appears front-side.
     setIsFlipped(false);
     setDragX(0);
     setTimeout(() => setDisableTransition(false), 50);
@@ -101,15 +107,12 @@ export default function MinimalFlashcard({
     const deltaX = dragX;
     const swipeThreshold = 80; // Minimum pixels for a swipe.
     if (deltaX > swipeThreshold) {
-      // Swipe right: navigate to previous card.
       navigateCard('prev');
       setIsDragging(false);
     } else if (deltaX < -swipeThreshold) {
-      // Swipe left: navigate to next card.
       navigateCard('next');
       setIsDragging(false);
     } else {
-      // Not enough drag: spring back to center.
       setDragX(0);
       setIsDragging(false);
     }
@@ -135,13 +138,11 @@ export default function MinimalFlashcard({
     // Outer wrapper with overflow-hidden prevents horizontal scroll.
     <div className="max-w-md mx-auto overflow-hidden">
       <div className="relative w-full h-64 mb-4" style={{ perspective: '1000px' }}>
-        {/* Conditionally render the underlying (stack) card only while dragging */}
+        {/* Underlying (stack) card rendered only while dragging */}
         {(isDragging || dragX !== 0) && (
           <div
-            className="absolute w-full h-full rounded-md shadow-md bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center select-none"
-            style={{
-              transform: 'scale(0.95) translateY(8px)',
-            }}
+            className="absolute inset-0 rounded-md shadow-md bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center select-none"
+            // Underlying card now uses inset-0 so that it exactly matches the top card's size.
           >
             <span className="font-bold text-3xl text-gray-900 dark:text-gray-100">{stackCard}</span>
             {/* Underlying card counter */}
@@ -167,24 +168,27 @@ export default function MinimalFlashcard({
         >
           {/* Front side */}
           <div
-            className="absolute w-full h-full flex items-center justify-center"
-            style={{ backfaceVisibility: 'hidden' }}
+            className="absolute inset-0 flex items-center justify-center"
+            style={{
+              backfaceVisibility: 'hidden',
+              transform: 'translateZ(0)',
+              willChange: 'transform',
+            }}
           >
             <span className="font-bold text-3xl text-gray-900 dark:text-gray-100">{front}</span>
           </div>
           {/* Back side */}
           <div
-            className="absolute w-full h-full flex items-center justify-center"
+            className="absolute inset-0 flex items-center justify-center"
             style={{
               backfaceVisibility: 'hidden',
-              transform: 'rotateY(180deg)',
+              transform: 'rotateY(180deg) translateZ(0)',
+              willChange: 'transform',
             }}
           >
             <span className="font-bold text-3xl text-gray-800 dark:text-gray-100">{back}</span>
           </div>
-          {/* Top card counter overlay.
-              Its inline style cancels out the parent's Y-rotation when flipped.
-          */}
+          {/* Top card counter overlay (kept upright regardless of flip) */}
           <div
             className="absolute bottom-2 right-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded"
             style={{ transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)' }}
